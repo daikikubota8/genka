@@ -13,13 +13,11 @@ body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","游ゴシック","M
 button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 input,select,textarea{font-family:inherit;font-size:14px}
 .hidden{display:none!important}
-
 header.app{background:var(--pri);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 header.app h1{font-size:17px;margin:0;font-weight:700}
 header.app .sp{flex:1}
 header.app .save{font-size:12px;opacity:.85}
 .hbtn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:6px 10px;font-size:12px}
-
 nav.tabs{display:flex;gap:4px;padding:8px 12px 0;background:#dfe6ef;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:30}
 nav.tabs::-webkit-scrollbar{display:none}
 .tab{background:#c9d4e2;border:none;border-radius:8px 8px 0 0;padding:9px 16px;font-weight:700;color:#334155;white-space:nowrap;font-size:14px;flex-shrink:0}
@@ -27,7 +25,6 @@ nav.tabs::-webkit-scrollbar{display:none}
 .tab .x{display:none;margin-left:8px;color:#94a3b8;font-weight:400}
 .tab.active .x{display:inline}
 .tab.add{background:transparent;color:var(--pri);font-size:18px;padding:6px 12px}
-
 .wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;padding:14px;max-width:1500px;margin:0 auto}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px}
 aside.side{padding:12px;align-self:start;position:sticky;top:52px;max-height:calc(100vh - 66px);overflow:auto}
@@ -40,15 +37,12 @@ aside.side{padding:12px;align-self:start;position:sticky;top:52px;max-height:cal
 .btn.sm{padding:4px 9px;font-size:12px}
 .btn.block{width:100%}
 input.search{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:7px;margin:8px 0}
-
-/* 分類チップ */
 .chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:#334155;white-space:nowrap}
 .chip.on{background:var(--pri);border-color:var(--pri);color:#fff}
 .chip .n{opacity:.7;margin-left:4px;font-weight:400}
 .chip.set{border-style:dashed;color:var(--pri2)}
-
 .grp h4{margin:10px 2px 4px;font-size:12px;color:var(--sub);font-weight:700;display:flex;justify-content:space-between}
 .ritem{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
 .ritem:hover{background:#f1f5f9}
@@ -60,15 +54,12 @@ input.search{width:100%;padding:9px 10px;border:1px solid var(--line);border-rad
 .ritem .rt b{display:block;font-size:14px;color:var(--pri)}
 .tools{border-top:1px solid var(--line);margin-top:12px;padding-top:10px;display:grid;gap:6px}
 .tools .cap{font-size:11px;color:var(--sub)}
-
-/* 分類管理 */
 .catmgr{border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px;background:#fafcff}
 .catmgr .row{display:flex;gap:4px;align-items:center;margin-bottom:5px}
 .catmgr .row input{flex:1;padding:7px 8px;border:1px solid #cfd6df;border-radius:6px;min-width:0}
 .catmgr .row button{border:1px solid var(--line);background:#fff;border-radius:6px;width:30px;height:32px;padding:0;flex-shrink:0}
 .catmgr .add{display:flex;gap:4px;margin-top:6px}
 .catmgr .add input{flex:1;padding:7px 8px;border:1px solid #93c5fd;border-radius:6px;min-width:0}
-
 main.ed{min-width:0;display:grid;gap:12px;align-content:start}
 .edbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 12px}
 .edbar .ttl{font-weight:800;font-size:16px;flex:1;min-width:140px}
@@ -80,7 +71,6 @@ main.ed{min-width:0;display:grid;gap:12px;align-content:start}
 .fld label{display:block;font-size:11px;color:var(--sub);margin-bottom:3px;font-weight:700}
 .fld input,.fld select,.fld textarea{width:100%;padding:8px 9px;border:1px solid #cfd6df;border-radius:7px;background:#fff}
 .fld.name input{background:var(--yellow);font-weight:700}
-
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .kpi{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#fafcff}
 .kpi .l{font-size:11px;color:var(--sub);font-weight:700}
@@ -88,7 +78,6 @@ main.ed{min-width:0;display:grid;gap:12px;align-content:start}
 .kpi .s{font-size:11px;color:var(--sub);margin-top:2px}
 .kpi input{width:100%;font-size:20px;font-weight:800;border:1px solid #cfd6df;border-radius:6px;padding:4px 8px;margin-top:2px;background:#fff}
 .kpi.hl{background:var(--blue);border-color:#bcdcff}.kpi.hl .v{color:var(--pri)}
-
 .ihead,.irow{display:grid;grid-template-columns:28px minmax(180px,1fr) 96px 86px 66px 86px 96px 120px;gap:6px;align-items:center}
 .ihead{font-size:11px;color:var(--sub);font-weight:700;padding:0 6px 6px;border-bottom:2px solid var(--line)}
 .ihead div{text-align:center}.ihead div:nth-child(2){text-align:left}
@@ -105,24 +94,20 @@ main.ed{min-width:0;display:grid;gap:12px;align-content:start}
 .fixednote{font-size:11px;color:var(--sub);text-align:center;grid-column:span 2}
 .itotal{display:flex;justify-content:flex-end;gap:18px;padding:10px 8px 2px;font-weight:800;font-size:15px;align-items:center;flex-wrap:wrap}
 .itotal .btns{margin-right:auto;display:flex;gap:6px}
-
 #suggest{position:absolute;z-index:100;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,42,.18);max-height:260px;overflow:auto}
 #suggest .sh{font-size:11px;color:var(--sub);padding:6px 10px;background:#f8fafc;font-weight:700;position:sticky;top:0}
 #suggest .so{padding:9px 10px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;font-size:13px;border-top:1px solid #f1f5f9}
 #suggest .so.on,#suggest .so:hover{background:var(--blue)}
 #suggest .so small{color:var(--sub);white-space:nowrap}
-
 .step{display:grid;grid-template-columns:70px 1fr 96px;gap:8px;align-items:start;margin-bottom:8px}
 .step select{padding:7px 4px;border:1px solid #cfd6df;border-radius:6px;font-weight:700;background:var(--blue);color:var(--pri)}
 .step textarea{width:100%;padding:7px 9px;border:1px solid #cfd6df;border-radius:6px;resize:vertical;min-height:38px;line-height:1.5}
-
 .photos{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:12px}
 .pbox{border:2px dashed #cbd5e1;border-radius:9px;min-height:170px;display:flex;align-items:center;justify-content:center;position:relative;background:#fafcff;cursor:pointer;overflow:hidden}
 .pbox img{max-width:100%;max-height:240px;display:block}
 .pbox .ph{color:var(--sub);font-size:12px;text-align:center;padding:10px}
 .pbox .rm{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:5px;font-size:11px;padding:3px 7px}
 .plabel{font-size:11px;color:var(--sub);font-weight:700;margin-bottom:4px}
-
 /* 提案会 */
 nav.subtabs{display:flex;gap:6px;padding:10px 14px 0;max-width:1500px;margin:0 auto;overflow-x:auto;scrollbar-width:none;align-items:center}
 nav.subtabs::-webkit-scrollbar{display:none}
@@ -199,10 +184,9 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
 .ned .ntitle{font-size:18px;font-weight:800;border:1px solid #cfd6df;border-radius:8px;padding:10px;width:100%}
 .ned textarea{width:100%;min-height:55vh;border:1px solid #cfd6df;border-radius:8px;padding:12px;font-size:15px;line-height:1.7;resize:vertical}
 .ned .nbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.ned .nbar input{padding:7px 9px;border:1px solid #cfd6df;border-radius:7px}
 .twrap{padding:14px;max-width:800px;margin:0 auto;display:grid;gap:12px}
 .tadd{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px}
-.tadd input,.tadd select{padding:9px;border:1px solid #cfd6df;border-radius:7px;width:100%}
+.tadd input{padding:9px;border:1px solid #cfd6df;border-radius:7px;width:100%}
 .tfil{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .task{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px;border-bottom:1px solid #eef1f5}
 .task .ck{width:26px;height:26px;border-radius:50%;border:2px solid #94a3b8;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
@@ -210,29 +194,43 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
 .task.done .tt{text-decoration:line-through;color:#94a3b8}
 .task .tt{width:100%;border:1px solid transparent;border-radius:6px;padding:4px 6px;font-size:15px;font-weight:700;background:transparent}
 .task .tt:hover,.task .tt:focus{border-color:#cfd6df;background:#fff}
-.task .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;align-items:center}
-.task .meta input,.task .meta select{border:1px solid #e2e8f0;border-radius:6px;padding:4px 6px;font-size:12px;background:#fff}
-.task .tn{width:100%;margin-top:6px;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-size:12px;min-height:30px;resize:vertical}
-.due{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
-.due.over{background:#fee2e2;color:#b91c1c}.due.today{background:#fef3c7;color:#92400e}.due.soon{background:#e0f2fe;color:#075985}
-.pri-h{color:#b91c1c;font-weight:800}
 @media (max-width:900px){
   .nwrap{grid-template-columns:1fr;padding:10px}
   .nwrap .side{position:static;max-height:none}
   body.n-edit .nwrap .side{display:none}body.n-list .nwrap .ned{display:none}
   .ned textarea{font-size:16px;min-height:60vh}.ned .ntitle{font-size:17px}
   .tadd input{font-size:16px}.tadd .btn{padding:0 18px}
-  .task .tt{font-size:16px}.task .meta input,.task .meta select{font-size:14px;padding:6px}
+  .task .tt{font-size:16px}
   .twrap{padding:10px}
 }
 /* 簡易計算 */
 .tab.quick{background:#fde68a;color:#78350f}
 .tab.quick.active{background:var(--bg);color:#92400e}
-.qwrap{padding:14px;max-width:1100px;margin:0 auto;display:grid;gap:12px}
+.qwrap{padding:14px;max-width:1100px;margin:0 auto;display:grid;gap:10px}
 .qtop{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .qtop h2{margin:0;font-size:17px;color:#92400e;flex:1}
-.qcard{padding:14px;border-left:5px solid #f59e0b}
-.qhead{display:grid;grid-template-columns:1fr 200px auto;gap:10px;align-items:end;margin-bottom:10px}
+.qbar{padding:10px 12px;display:grid;gap:6px;position:sticky;top:44px;z-index:15}
+.qbar .row1{display:flex;gap:6px;align-items:center}
+.qbar input.search{margin:0;flex:1}
+.qbar .chips{padding:0}
+.qbar .chip.on{background:#d97706;border-color:#d97706}
+.qgrp{font-size:12px;font-weight:800;color:#92400e;margin:8px 2px 0;display:flex;justify-content:space-between}
+.qcard{border-left:5px solid #f59e0b;overflow:hidden}
+.qsum{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 14px;cursor:pointer;user-select:none}
+.qsum:hover{background:#fffbeb}
+.qsum .arw{color:#d97706;font-size:13px;transition:transform .15s}
+.qcard.open .qsum .arw{transform:rotate(90deg)}
+.qsum .nm{min-width:0}
+.qsum .nm b{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qsum .nm small{display:block;color:var(--sub);font-size:11px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qsum .bpill{display:inline-block;font-size:11px;font-weight:700;background:#fef3c7;color:#92400e;border-radius:999px;padding:1px 8px;margin-right:6px}
+.qsum .nums{display:flex;gap:16px;text-align:right;font-variant-numeric:tabular-nums}
+.qsum .nums div{font-size:10px;color:var(--sub);font-weight:700;white-space:nowrap}
+.qsum .nums b{display:block;font-size:15px;color:var(--text)}
+.qsum .nums .rt b{color:#b45309}
+.qbody{display:none;padding:0 14px 14px;border-top:1px dashed #fde68a}
+.qcard.open .qbody{display:block}
+.qhead{display:grid;grid-template-columns:1fr 220px auto;gap:10px;align-items:end;margin:12px 0 10px}
 .qhead .x{border:1px solid #fecaca;background:#fff;color:var(--ng);border-radius:7px;height:36px;padding:0 12px}
 .qh,.qr{display:grid;grid-template-columns:minmax(150px,1fr) 100px 90px 80px 90px 96px 34px;gap:6px;align-items:center}
 .qh{font-size:11px;color:var(--sub);font-weight:700;padding:0 2px 5px;border-bottom:2px solid var(--line)}
@@ -249,6 +247,10 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
 .qadd{align-self:center}
 @media (max-width:900px){
   .qwrap{padding:10px}
+  .qbar{top:42px}
+  .qbar input.search{font-size:16px}
+  .qsum{grid-template-columns:18px minmax(0,1fr);padding:11px 12px}
+  .qsum .nums{grid-column:2;justify-content:flex-start;gap:14px;text-align:left}
   .qhead{grid-template-columns:1fr 1fr}.qhead .fld:first-child{grid-column:1/-1}
   .qh{display:none}
   .qr{grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:9px;padding:9px;margin-bottom:8px;background:#fafcff}
@@ -266,7 +268,6 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
 .toast.on{opacity:.95}
 .mobbar{display:none}
 .fab{display:none}
-
 /* ===== スマホ ===== */
 @media (max-width:900px){
   header.app{padding:8px 12px}
@@ -277,7 +278,7 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
   body.m-edit aside.side{display:none}
   body.m-list main.ed{display:none}
   .back{display:inline-block}
-  .edbar{position:sticky;top:44px;z-index:20;padding:8px 10px;gap:6px}
+  .edbar{position:sticky;top:42px;z-index:20;padding:8px 10px;gap:6px}
   .edbar .ttl{font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1 1 100%;order:-1}
   .edbar .btn{flex:1;padding:8px 4px;font-size:12px}
   .ritem{background:#fff;border:1px solid var(--line);margin-bottom:6px;padding:12px}
@@ -294,19 +295,15 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
   .irow .c-price{grid-column:1/3}.irow .c-pack{grid-column:3/5}.irow .c-unit{grid-column:5/7}
   .irow .fixednote{grid-column:1/5;grid-row:2;text-align:left;align-self:center}
   .irow.fixed .c-unit{grid-column:5/7;grid-row:2}
-  .irow .c-qty{grid-column:1/3}.irow .c-cost{grid-column:3/5;align-self:end;font-size:18px;padding-bottom:4px}
-  .irow .c-act{grid-column:5/7;align-self:end}
-  .irow.fixed .c-cost{grid-column:3/5}
+  .irow .c-qty{grid-column:1/3}
   .irow label{display:block;font-size:10px;color:var(--sub);font-weight:700;margin-bottom:2px}
   .irow input{font-size:16px;padding:9px 8px}
-  .c-act button{height:36px;min-width:32px;font-size:13px}
   .c-act button.mode{display:none}
   .irow .c-act [data-act=up],.irow .c-act [data-act=down]{display:none}
-  .irow .c-cost{grid-column:3/6!important;padding-right:4px}
-  .irow .c-act{grid-column:6/7!important;flex-direction:column;gap:4px}
+  .irow .c-cost{grid-column:3/6!important;align-self:end;font-size:18px;padding-bottom:4px;padding-right:4px}
+  .irow .c-act{grid-column:6/7!important;flex-direction:column;gap:4px;align-self:end}
   .irow .c-act button{width:100%;height:30px}
   body.m-list .mobbar{display:none}
-  .edbar{top:42px}
   .irow .more{display:inline-block}
   .itotal .btns{width:100%}.itotal .btns .btn{flex:1;padding:10px}
   .photos{grid-template-columns:1fr}
@@ -322,7 +319,6 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
   body.m-list .side .newbtn{display:none}
 }
 @media (min-width:901px){.c-act .more{display:none}.chips{flex-wrap:wrap}}
-
 /* ===== 印刷 ===== */
 #printArea{display:none}
 .plsheet{width:194mm;font-family:"Yu Gothic","游ゴシック","Hiragino Kaku Gothic ProN",sans-serif;color:#000;font-size:10pt}
@@ -339,11 +335,8 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
 .plsheet td.no{text-align:center;width:8mm;background:#f8f5ff}
 .plsheet td.nm{width:52mm}.plsheet td.nm b{font-size:10.5pt;display:block}.plsheet td.nm small{font-size:8pt;color:#333}
 .plsheet td.num{text-align:right;white-space:nowrap;width:18mm}
-.plsheet td.oxcell{width:24mm;text-align:center;white-space:nowrap}
-.plsheet .bx{display:inline-flex;align-items:center;justify-content:center;width:7.5mm;height:7.5mm;border:1px solid #000;border-radius:50%;font-size:12pt;font-weight:700;margin:0 1mm;color:#bbb}
-.plsheet .bx.on{background:#000;color:#fff}
+.plsheet td.oxcell{width:24mm}
 .plsheet td.memo{height:20mm;vertical-align:top;white-space:pre-wrap;font-size:9pt;line-height:1.5}
-.plsheet tfoot td{font-weight:700;background:#fafafa}
 .plsheet .foot{margin-top:6px;font-size:8pt;text-align:right;color:#444}
 @page{size:A4 portrait;margin:8mm}
 @media print{body{background:#fff;padding:0!important}body>*:not(#printArea){display:none!important}#printArea{display:block}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
@@ -391,13 +384,12 @@ body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
 <div class="toast" id="toast"></div>
 <div id="printArea"></div>
 <datalist id="unitList"><option value="g"><option value="ml"><option value="個"><option value="本"><option value="枚"><option value="尾"><option value="切"><option value="貫"><option value="袋"><option value="缶"></datalist>
-
 <script>
 const DEFAULT_BRANDS=['CONA','ナポリマン','焼売のジョー','金目樽','寿司'];
 const DB_NAME='genkaTool',STORE='kv',KEY='state_v2';
 const EXCEL_CDN=['https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js','https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js'];
 const NOCAT='__none',ALL='__all';
-
+const TOOLPAGES=['quick','memo','task'];
 let S=null;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -436,29 +428,29 @@ function recipeCost(r){return r.items.reduce((a,it)=>a+itemCost(it),0)}
 function rateOf(r){const p=num(r.price);return p>0?recipeCost(r)/p:NaN}
 function setMode(m){document.body.classList.toggle('m-edit',m==='edit');document.body.classList.toggle('m-list',m!=='edit')}
 
-/* ===== ブランドタブ ===== */
+/* ===== タブ ===== */
 function renderTabs(){
-  const q=['quick','memo','task'].includes(S.cur.page),pg=S.cur.page,open=S.tasks.filter(t=>!t.done).length;
-  $('#tabs').innerHTML=`<button class="tab quick ${pg==='quick'?'active':''}" id="tabQuick">🧮 簡易計算</button><button class="tab tool ${pg==='memo'?'active':''}" data-pg="memo">📝 メモ帳</button><button class="tab tool ${pg==='task'?'active':''}" data-pg="task">✅ タスク${open?`<span class="bdg" style="background:#64748b">${open}</span>`:''}</button>`+S.brands.map(b=>`<button class="tab ${!q&&b.id===S.cur.brandId?'active':''}" data-b="${b.id}">${esc(b.name)}<span class="x" data-del="${b.id}">✕</span></button>`).join('')+`<button class="tab add" id="addBrand" title="ブランド追加">＋</button>`;
+  const q=TOOLPAGES.includes(S.cur.page),pg=S.cur.page,open=S.tasks.filter(t=>!t.done).length;
+  $('#tabs').innerHTML=`<button class="tab quick ${pg==='quick'?'active':''}" data-pg="quick">🧮 簡易計算</button><button class="tab tool ${pg==='memo'?'active':''}" data-pg="memo">📝 メモ帳</button><button class="tab tool ${pg==='task'?'active':''}" data-pg="task">✅ タスク${open?`<span class="bdg" style="background:#64748b">${open}</span>`:''}</button>`
+    +S.brands.map(b=>`<button class="tab ${!q&&b.id===S.cur.brandId?'active':''}" data-b="${b.id}">${esc(b.name)}<span class="x" data-del="${b.id}">✕</span></button>`).join('')+`<button class="tab add" id="addBrand" title="ブランド追加">＋</button>`;
   $('#tabs .tab.active')?.scrollIntoView({inline:'nearest',block:'nearest'});
 }
 $('#tabs').addEventListener('click',e=>{
   const del=e.target.closest('[data-del]');
   if(del){e.stopPropagation();const b=S.brands.find(x=>x.id===del.dataset.del);if(S.brands.length<=1)return toast('最後のブランドは削除できません');
     if(!confirm(`ブランド「${b.name}」と商品${b.recipes.length}件を削除しますか？`))return;
-    S.brands=S.brands.filter(x=>x!==b);S.cur={brandId:S.brands[0].id,recipeId:null,cat:ALL};save();renderAll();return}
-  const tb=e.target.closest('[data-b]');
+    S.brands=S.brands.filter(x=>x!==b);S.cur={brandId:S.brands[0].id,recipeId:null,cat:ALL,page:'brand'};save();renderAll();return}
   const pgb=e.target.closest('[data-pg]');if(pgb){S.cur.page=pgb.dataset.pg;save();renderAll();window.scrollTo(0,0);return}
-  if(e.target.closest('#tabQuick')){S.cur.page='quick';save();renderAll();window.scrollTo(0,0);return}
-  if(tb){const wasQ=['quick','memo','task'].includes(S.cur.page);S.cur.page='brand';if(wasQ&&S.cur.brandId===tb.dataset.b){save();renderAll();return}if(S.cur.brandId!==tb.dataset.b){S.cur={brandId:tb.dataset.b,recipeId:null,cat:ALL,view:'rec',page:'brand'};catEdit=false;sideQuery=''}setMode('list');save();renderAll();return}
+  const tb=e.target.closest('[data-b]');
+  if(tb){const wasQ=TOOLPAGES.includes(S.cur.page);S.cur.page='brand';if(wasQ&&S.cur.brandId===tb.dataset.b){save();renderAll();return}if(S.cur.brandId!==tb.dataset.b){S.cur={brandId:tb.dataset.b,recipeId:null,cat:ALL,view:'rec',page:'brand'};catEdit=false;sideQuery=''}setMode('list');save();renderAll();return}
   if(e.target.closest('#addBrand')){const n=prompt('追加するブランド名');if(!n||!n.trim())return;const b={id:uid('b'),name:n.trim(),cats:[],recipes:[],props:[]};S.brands.push(b);S.cur={brandId:b.id,recipeId:null,cat:ALL,page:'brand'};save();renderAll()}
 });
 $('#tabs').addEventListener('dblclick',e=>{const tb=e.target.closest('[data-b]');if(!tb)return;const b=S.brands.find(x=>x.id===tb.dataset.b);const n=prompt('ブランド名を変更',b.name);if(n&&n.trim()){b.name=n.trim();save();renderAll()}});
-
 function renderAll(){renderTabs();
-  const q=['quick','memo','task'].includes(S.cur.page);document.body.classList.toggle('v-quick',q);$('#subtabs').classList.toggle('hidden',q);
+  const q=TOOLPAGES.includes(S.cur.page);document.body.classList.toggle('v-quick',q);$('#subtabs').classList.toggle('hidden',q);
   document.body.classList.remove('n-edit','n-list');
-  if(q){document.body.classList.remove('v-prop');setMode('list');$('#mobbar').innerHTML='';({quick:renderQuick,memo:renderMemo,task:renderTask})[S.cur.page]();return}renderSubtabs();document.body.classList.toggle('v-prop',!!curProp());const pr=curProp();if(pr){renderProp(pr)}else{S.cur.view='rec';renderBrand()}}
+  if(q){document.body.classList.remove('v-prop');setMode('list');$('#mobbar').innerHTML='';({quick:renderQuick,memo:renderMemo,task:renderTask})[S.cur.page]();return}
+  renderSubtabs();document.body.classList.toggle('v-prop',!!curProp());const pr=curProp();if(pr){renderProp(pr)}else{S.cur.view='rec';renderBrand()}}
 const curProp=()=>S.cur.view&&S.cur.view!=='rec'?curBrand().props.find(p=>p.id===S.cur.view)||null:null;
 const propItems=(b,p)=>p.items.filter(x=>b.recipes.some(r=>r.id===x.rid));
 function renderSubtabs(){
@@ -618,21 +610,26 @@ function focusName(i){setTimeout(()=>{const el=$(`#items .irow[data-i="${i}"] .i
 
 /* ===== 簡易計算 ===== */
 const QUNITS=['g','ml','個','本'];
+const QNONE='__nobrand';
+let qQuery='',qBrandF=ALL;
 function qBlankItem(){return{name:'',price:'',pack:'',unit:'g',qty:''}}
-function qNew(){return{id:uid('q'),name:'',brand:'',price:'',items:[qBlankItem(),qBlankItem(),qBlankItem()]}}
+function qNew(brand){return{id:uid('q'),name:'',brand:brand||'',price:'',open:true,items:[qBlankItem(),qBlankItem(),qBlankItem()],ts:Date.now()}}
 const qItemCost=it=>{const p=nz(it.pack);return p>0?nz(it.price)/p*nz(it.qty):0};
 const qCost=q=>q.items.reduce((a,it)=>a+qItemCost(it),0);
-function renderQuick(){
-  setMode('list');$('#mobbar').innerHTML='';
-  if(!S.quick.length)S.quick.push(qNew());
-  const brands=[...new Set([...S.brands.map(b=>b.name),...S.quick.map(q=>q.brand).filter(Boolean)])];
-  $('#view').innerHTML=`<datalist id="qBrandList">${brands.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
-  <div class="qwrap">
-    <div class="qtop"><h2>🧮 簡易原価計算</h2><button class="btn pri" id="qNewTop">＋ 商品を追加</button></div>
-    <div id="qlist"></div>
-    <button class="btn pri block" id="qNewBottom" style="padding:12px">＋ 商品を追加</button>
-  </div>`;
-  $('#qlist').innerHTML=S.quick.map(q=>`<div class="card qcard" data-q="${q.id}">
+const qBrandList=()=>{const used=S.quick.map(q=>(q.brand||'').trim()).filter(Boolean);return[...new Set([...S.brands.map(b=>b.name),...used])]};
+function qVisible(){
+  const t=norm(qQuery);
+  return S.quick.filter(q=>{const br=(q.brand||'').trim();
+    if(qBrandF===QNONE?br:(qBrandF!==ALL&&br!==qBrandF))return false;
+    if(t&&!norm(q.name+' '+br+' '+q.items.map(i=>i.name).join(' ')).includes(t))return false;return true});
+}
+function qSumHTML(q){const t=qCost(q),p=num(q.price),cnt=q.items.filter(i=>i.name).length;
+  return `<span class="arw">▶</span><div class="nm"><b>${esc(q.name||'（商品名未入力）')}</b><small>${q.brand?`<span class="bpill">${esc(q.brand)}</span>`:''}商材 ${cnt}点</small></div>
+    <div class="nums"><div>合計原価<b>${yen(t,1)}</b></div><div>売価<b>${p>0?'¥'+p.toLocaleString():'—'}</b></div><div class="rt">原価率<b>${p>0?pct(t/p):'—'}</b></div></div>`}
+function qCardHTML(q){
+  return `<div class="card qcard ${q.open?'open':''}" data-q="${q.id}">
+    <div class="qsum" data-qtoggle>${qSumHTML(q)}</div>
+    <div class="qbody">
     <div class="qhead">
       <div class="fld name"><label>商品名</label><input data-qf="name" value="${esc(q.name)}" placeholder="例：きのこのアヒージョ"></div>
       <div class="fld"><label>ブランド（選択 or 入力）</label><input data-qf="brand" list="qBrandList" value="${esc(q.brand)}" placeholder="選択または入力"></div>
@@ -652,24 +649,64 @@ function renderQuick(){
       <div class="kpi hl"><div class="l">合計原価</div><div class="v" data-qt>—</div></div>
       <div class="kpi"><div class="l">想定売価（税抜）</div><input inputmode="decimal" data-qf="price" value="${esc(q.price)}" placeholder="例：600"></div>
       <div class="kpi"><div class="l">原価率</div><div class="v" data-qr>—</div></div>
-    </div></div>`).join('');
-  S.quick.forEach(qRefresh);
-  const add=()=>{const q=qNew();S.quick.push(q);save();renderQuick();setTimeout(()=>{const c=document.querySelector(`[data-q="${q.id}"]`);c.scrollIntoView({behavior:'smooth',block:'start'});c.querySelector('[data-qf=name]').focus()},50)};
+    </div></div></div>`;
+}
+function renderQuick(){
+  setMode('list');$('#mobbar').innerHTML='';
+  const brands=qBrandList();
+  if(qBrandF!==ALL&&qBrandF!==QNONE&&!brands.includes(qBrandF))qBrandF=ALL;
+  const cnt=v=>S.quick.filter(q=>{const br=(q.brand||'').trim();return v===ALL||(v===QNONE?!br:br===v)}).length;
+  const shown=brands.filter(n=>cnt(n)>0||S.brands.some(b=>b.name===n));
+  const none=cnt(QNONE);
+  $('#view').innerHTML=`<datalist id="qBrandList">${brands.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+  <div class="qwrap">
+    <div class="qtop"><h2>🧮 簡易原価計算</h2><button class="btn pri" id="qNewTop">＋ 商品を追加</button></div>
+    <div class="card qbar">
+      <div class="row1"><input class="search" id="qSearch" placeholder="🔍 商品名・ブランド・商材名で検索" value="${esc(qQuery)}"><button class="btn sm" id="qOpenAll">全て開く</button><button class="btn sm" id="qCloseAll">全て閉じる</button></div>
+      <div class="chips">${[[ALL,'すべて'],...shown.map(n=>[n,n]),...(none?[[QNONE,'ブランド未設定']]:[])].map(([v,l])=>`<button class="chip ${qBrandF===v?'on':''}" data-qb="${esc(v)}">${esc(l)}<span class="n">${cnt(v)}</span></button>`).join('')}</div>
+    </div>
+    <div id="qlist"></div>
+    <button class="btn pri block" id="qNewBottom" style="padding:12px">＋ 商品を追加</button>
+  </div>`;
+  renderQList();
+  const add=()=>{const q=qNew(qBrandF!==ALL&&qBrandF!==QNONE?qBrandF:'');S.quick.push(q);qQuery='';save();renderQuick();
+    setTimeout(()=>{const c=document.querySelector(`[data-q="${q.id}"]`);c.scrollIntoView({behavior:'smooth',block:'start'});c.querySelector('[data-qf=name]').focus()},50)};
   $('#qNewTop').onclick=add;$('#qNewBottom').onclick=add;
+  $('#qSearch').oninput=e=>{qQuery=e.target.value;renderQList()};
+  document.querySelectorAll('[data-qb]').forEach(b=>b.onclick=()=>{qBrandF=b.dataset.qb;renderQuick()});
+  $('#qOpenAll').onclick=()=>{qVisible().forEach(q=>q.open=true);save();renderQList()};
+  $('#qCloseAll').onclick=()=>{qVisible().forEach(q=>q.open=false);save();renderQList()};
+}
+function renderQList(){
+  const list=qVisible();
+  if(!list.length){$('#qlist').innerHTML=`<div class="card empty">${S.quick.length?'該当する商品がありません':'「＋ 商品を追加」から簡易計算を始めてください'}</div>`;return}
+  let html='';
+  if(qBrandF===ALL){
+    const order=qBrandList();const groups=new Map();
+    list.forEach(q=>{const k=(q.brand||'').trim()||'ブランド未設定';if(!groups.has(k))groups.set(k,[]);groups.get(k).push(q)});
+    const keys=[...groups.keys()].sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return(ia<0?999:ia)-(ib<0?999:ib)});
+    keys.forEach(k=>{html+=`<div class="qgrp"><span>${esc(k)}</span><span>${groups.get(k).length}品</span></div>`+groups.get(k).map(qCardHTML).join('')});
+  }else html=list.map(qCardHTML).join('');
+  $('#qlist').innerHTML=`<div style="display:grid;gap:8px">${html}</div>`;
+  list.forEach(qRefresh);
 }
 function qRefresh(q){const c=document.querySelector(`[data-q="${q.id}"]`);if(!c)return;
   q.items.forEach((it,i)=>{const e=c.querySelector(`[data-qc="${i}"]`);if(e)e.textContent=yen(qItemCost(it),1)});
-  const t=qCost(q),p=num(q.price);c.querySelector('[data-qt]').textContent=yen(t,1);c.querySelector('[data-qr]').textContent=p>0?pct(t/p):'—'}
+  const t=qCost(q),p=num(q.price);c.querySelector('[data-qt]').textContent=yen(t,1);c.querySelector('[data-qr]').textContent=p>0?pct(t/p):'—';
+  c.querySelector('.qsum').innerHTML=qSumHTML(q)}
 const qOf=el=>S.quick.find(q=>q.id===el.closest('[data-q]')?.dataset.q);
 document.addEventListener('input',e=>{const t=e.target;if(!t.closest('#qlist'))return;const q=qOf(t);if(!q)return;
-  if(t.dataset.qf){q[t.dataset.qf]=t.value}else if(t.dataset.if){q.items[+t.closest('.qr').dataset.i][t.dataset.if]=t.value}else return;save();qRefresh(q)});
-document.addEventListener('change',e=>{const t=e.target;if(!t.closest('#qlist')||t.tagName!=='SELECT')return;const q=qOf(t);q.items[+t.closest('.qr').dataset.i].unit=t.value;save()});
+  if(t.dataset.qf){q[t.dataset.qf]=t.value}else if(t.dataset.if){q.items[+t.closest('.qr').dataset.i][t.dataset.if]=t.value}else return;q.ts=Date.now();save();qRefresh(q)});
+document.addEventListener('change',e=>{const t=e.target;if(!t.closest('#qlist'))return;const q=qOf(t);if(!q)return;
+  if(t.tagName==='SELECT'){q.items[+t.closest('.qr').dataset.i].unit=t.value;q.ts=Date.now();save()}
+  else if(t.dataset.qf==='brand'){q.brand=t.value.trim();save();const y=window.scrollY;renderQuick();window.scrollTo(0,y)}});
 document.addEventListener('click',e=>{const t=e.target;if(!t.closest('#qlist'))return;const q=qOf(t);if(!q)return;
-  if(t.closest('[data-iadd]')){q.items.push(qBlankItem());save();renderQuick();setTimeout(()=>{const r=document.querySelectorAll(`[data-q="${q.id}"] .qr`);r[r.length-1]?.querySelector('input')?.focus()},40)}
-  else if(t.closest('[data-idel]')){q.items.splice(+t.closest('.qr').dataset.i,1);if(!q.items.length)q.items.push(qBlankItem());save();renderQuick()}
+  if(t.closest('[data-qtoggle]')){q.open=!q.open;save();t.closest('.qcard').classList.toggle('open',q.open);return}
+  if(t.closest('[data-iadd]')){q.items.push(qBlankItem());save();renderQList();setTimeout(()=>{const r=document.querySelectorAll(`[data-q="${q.id}"] .qr`);r[r.length-1]?.querySelector('input')?.focus()},40)}
+  else if(t.closest('[data-idel]')){q.items.splice(+t.closest('.qr').dataset.i,1);if(!q.items.length)q.items.push(qBlankItem());save();renderQList()}
   else if(t.closest('[data-qdel]')){if((q.name||q.items.some(i=>i.name))&&!confirm(`「${q.name||'この商品'}」を削除しますか？`))return;S.quick=S.quick.filter(x=>x!==q);save();renderQuick()}});
 document.addEventListener('keydown',e=>{if(e.key!=='Tab'||e.shiftKey)return;const r=e.target.closest('#qlist .qr');if(!r)return;const q=qOf(r);
-  if(+r.dataset.i!==q.items.length-1||e.target.dataset.if!=='qty')return;e.preventDefault();q.items.push(qBlankItem());save();renderQuick();
+  if(+r.dataset.i!==q.items.length-1||e.target.dataset.if!=='qty')return;e.preventDefault();q.items.push(qBlankItem());save();renderQList();
   setTimeout(()=>{const rs=document.querySelectorAll(`[data-q="${q.id}"] .qr`);rs[rs.length-1]?.querySelector('input')?.focus()},40)});
 
 /* ===== メモ帳 ===== */
@@ -761,7 +798,7 @@ function renderProp(p){
       <td class="oxc"><div class="ox"><button class="o ${o.x.mark==='o'?'on':''}" data-mk="o">〇</button><button class="x ${o.x.mark==='x'?'on':''}" data-mk="x">✕</button></div></td>
       <td class="memo"><textarea data-memo rows="2" placeholder="メモ（味・盛り付け・改善点など）">${esc(o.x.memo)}</textarea></td>
       <td class="mv"><div class="pmv"><button data-pm="-1">↑</button><button data-pm="1">↓</button><button data-pm="del" style="color:var(--ng)">✕</button></div></td></tr>`}).join('')}
-    </tbody></table>`:`<div class="empty">まだ商品がありません。<br>「＋ 商品を選ぶ」から試食会に出す商品を選んでください。</div>`}
+    </tbody></table>`:`<div class="empty">まだ商品がありません。<br>「＋ 商品選択」から試食会に出す商品を選んでください。</div>`}
    </div></div>`;
   $('#p_name').oninput=e=>{p.name=e.target.value;save();clearTimeout(renderProp._t);renderProp._t=setTimeout(renderSubtabs,300)};
   $('#p_date').onchange=e=>{p.date=e.target.value;save()};
@@ -870,8 +907,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Tab'&&!e.shiftKey){const row=e.target.closest('#items .irow');if(!row)return;const r=curRecipe();if(+row.dataset.i!==r.items.length-1)return;
     const ins=[...row.querySelectorAll('input')];if(e.target!==ins[ins.length-1])return;e.preventDefault();addItemRow()}
 });
-
-/* ---- 入力候補（過去に入力した商材から値をコピー／連動はしない） ---- */
+/* ---- 入力候補（過去に入力した商材から値をコピー） ---- */
 let sugRow=-1;
 function pastItems(){const b=curBrand(),r=curRecipe(),map=new Map();
   b.recipes.slice().sort((x,y)=>String(x.updated).localeCompare(String(y.updated))).forEach(x=>x.items.forEach(it=>{if(x===r&&r.items.indexOf(it)===sugRow)return;if(it.name&&it.mode!=='fixed'&&nz(it.pack)>0)map.set(norm(it.name),it)}));return[...map.values()]}
@@ -891,7 +927,6 @@ $('#suggest').addEventListener('mousedown',e=>{const o=e.target.closest('.so');i
   setTimeout(()=>$(`#items .irow[data-i="${idx}"] [data-f=qty]`)?.focus(),40)});
 document.addEventListener('focusout',e=>{if(e.target.classList?.contains('in-name'))setTimeout(hideSuggest,150)});
 window.addEventListener('resize',hideSuggest);
-
 /* ---- 工程 ---- */
 function renderSteps(){
   const r=curRecipe();let n=0;
@@ -906,15 +941,13 @@ function renderSteps(){
       if(a==='del')r.steps.splice(i,1);else if(a==='up'&&i>0)[r.steps[i-1],r.steps[i]]=[r.steps[i],r.steps[i-1]];else if(a==='down'&&i<r.steps.length-1)[r.steps[i+1],r.steps[i]]=[r.steps[i],r.steps[i+1]];
       save();renderSteps()})});
 }
-
 /* ---- 画像 ---- */
 let imgCb=null;
 function pickImage(cb){imgCb=cb;$('#fileImg').value='';$('#fileImg').click()}
 $('#fileImg').addEventListener('change',async e=>{const f=e.target.files[0];if(f&&imgCb){imgCb(await compressImage(f));imgCb=null}});
 function compressImage(src,max=900,q=.8){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const s=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};img.onerror=rej;img.src=typeof src==='string'?src:URL.createObjectURL(src)})}
 function imgSize(src){return new Promise(res=>{if(!src)return res(null);const i=new Image();i.onload=()=>res({w:i.naturalWidth,h:i.naturalHeight});i.onerror=()=>res(null);i.src=src})}
-
-/* ---- バックアップ ---- */
+/* ---- データ書き出し・取り込み ---- */
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
 $('#btnBackup').onclick=()=>{
   const nR=S.brands.reduce((a,b)=>a+b.recipes.length,0),nP=S.brands.reduce((a,b)=>a+b.props.length,0);
@@ -951,32 +984,30 @@ function mergeData(d){
   d.brands.forEach(src=>{
     let b=S.brands.find(x=>x.id===src.id)||S.brands.find(x=>norm(x.name)===norm(src.name));
     if(!b){S.brands.push(JSON.parse(JSON.stringify(src)));add+=src.recipes.length+src.props.length;return}
-    // 分類（名前で対応付け）
     const cmap={};src.cats.forEach(c=>{let t=b.cats.find(x=>x.id===c.id)||b.cats.find(x=>x.name===c.name);if(!t){t={id:c.id,name:c.name};if(b.cats.some(x=>x.id===t.id))t.id=uid('c');b.cats.push(t)}cmap[c.id]=t.id});
-    // レシピ（ID→無ければ商品名+略称で対応付け）
     const rmap={};
     src.recipes.forEach(r0=>{const r=JSON.parse(JSON.stringify(r0));r.catId=cmap[r.catId]||'';
       const i=b.recipes.findIndex(x=>x.id===r.id||(r.name&&norm(x.name)===norm(r.name)&&norm(x.short)===norm(r.short)));
       if(i<0){if(S.brands.some(bb=>bb.recipes.some(x=>x.id===r.id)))r.id=uid('r');b.recipes.push(r);add++}
       else{const cur=b.recipes[i];r.id=cur.id;if(newer(r,cur)&&JSON.stringify(r)!==JSON.stringify(cur)){b.recipes[i]=r;upd++}}
       rmap[r0.id]=r.id});
-    // 提案会（ID→名前）
     src.props.forEach(p0=>{const p=JSON.parse(JSON.stringify(p0));p.items=p.items.map(x=>Object.assign({},x,{rid:rmap[x.rid]||x.rid}));
       const t=b.props.find(x=>x.id===p.id)||b.props.find(x=>x.name===p.name);
       if(!t){b.props.push(p);add++;return}
-      let ch=false;p.items.forEach(x=>{const y=t.items.find(z=>z.rid===x.rid);if(!y){t.items.push(x);ch=true}else{if(!y.mark&&x.mark){y.mark=x.mark;ch=true}if(x.memo&&y.memo!==x.memo&&!y.memo.includes(x.memo)){y.memo=y.memo?y.memo+'\n'+x.memo:x.memo;ch=true}}});
+      let ch=false;p.items.forEach(x=>{const y=t.items.find(z=>z.rid===x.rid);if(!y){t.items.push(x);ch=true}else{if(!y.mark&&x.mark){y.mark=x.mark;ch=true}if(x.memo&&y.memo!==x.memo&&!(y.memo||'').includes(x.memo)){y.memo=y.memo?y.memo+'\n'+x.memo:x.memo;ch=true}}});
       if(!t.date&&p.date){t.date=p.date;ch=true}if(ch)upd++});
   });
-  d.quick.forEach(q=>{const i=S.quick.findIndex(x=>x.id===q.id);if(i<0){S.quick.push(JSON.parse(JSON.stringify(q)));add++}else if(JSON.stringify(S.quick[i])!==JSON.stringify(q)){S.quick[i]=JSON.parse(JSON.stringify(q));upd++}});
-  [['memos','memo'],['tasks','task']].forEach(([k])=>d[k].forEach(x=>{const i=S[k].findIndex(y=>y.id===x.id);
-    if(i<0){S[k].push(JSON.parse(JSON.stringify(x)));add++}else if((x.ts||0)>(S[k][i].ts||0)){S[k][i]=JSON.parse(JSON.stringify(x));upd++}}));
-  S.quick=S.quick.filter((q,i)=>!(i>0&&!q.name&&!q.items.some(it=>it.name)&&S.quick.length>1));
+  [['quick'],['memos'],['tasks']].forEach(([k])=>d[k].forEach(x=>{const i=S[k].findIndex(y=>y.id===x.id);
+    if(i<0){S[k].push(JSON.parse(JSON.stringify(x)));add++}
+    else{const a=S[k][i];const nw=k==='quick'?((x.ts||0)>=(a.ts||0)):((x.ts||0)>(a.ts||0));const keepOpen=a.open;
+      if(nw&&JSON.stringify(Object.assign({},a,{open:0}))!==JSON.stringify(Object.assign({},x,{open:0}))){S[k][i]=JSON.parse(JSON.stringify(x));if(k==='quick')S[k][i].open=keepOpen;upd++}}}));
+  S.quick=S.quick.filter(q=>q.name||q.items.some(it=>it.name)||S.quick.length<=1);
   return{add,upd};
 }
 
 /* ===== PDF ===== */
 function sheetHTML(b,r){
-  const total=recipeCost(r),p=num(r.price),rate=p>0?total/p:NaN,rows=Math.max(r.items.filter(i=>i.name).length,12),items=r.items.filter(i=>String(i.name||'').trim());
+  const total=recipeCost(r),p=num(r.price),rate=p>0?total/p:NaN,items=r.items.filter(i=>String(i.name||'').trim()),rows=Math.max(items.length,12);
   const itemRows=Array.from({length:rows},(_,i)=>{const it=items[i];if(!it)return `<tr><td class="no"></td><td>&nbsp;</td><td></td><td></td><td></td></tr>`;
     return `<tr><td class="no">${i+1}</td><td>${esc(it.name)}</td><td class="num">${esc(it.qty)}</td><td style="text-align:center">${esc(it.unit)}</td><td class="num">${yen(itemCost(it),1)}</td></tr>`}).join('');
   let n=0;const steps=r.steps.filter(s=>(s.text||'').trim()).map(s=>`<tr><td class="sn">${esc(s.mark||++n)}</td><td>${esc(s.text)}</td></tr>`).join('');
@@ -996,7 +1027,6 @@ function printRecipes(b,list){
   const imgs=[...$('#printArea').querySelectorAll('img')];
   Promise.all(imgs.map(i=>i.complete?1:new Promise(x=>{i.onload=i.onerror=x}))).then(()=>{const t=document.title;document.title=list.length===1?`レシピ_${b.name}_${list[0].short||list[0].name}`:`レシピ_${b.name}_${today()}`;setTimeout(()=>{window.print();document.title=t},100)});
 }
-
 /* ===== Excel ===== */
 let excelLoading=null;
 function loadExcelJS(){if(window.ExcelJS)return Promise.resolve();if(excelLoading)return excelLoading;
@@ -1006,7 +1036,6 @@ const thin={style:'thin',color:{argb:'FF000000'}},dbl={style:'double',color:{arg
 const fill=c=>({type:'pattern',pattern:'solid',fgColor:{argb:c}});
 const fmtYen='"¥"#,##0;"¥"\\-#,##0',fmtCost='#,##0_);[Red]\\(#,##0\\)';
 function sheetName(s,used){let n=String(s||'無題').replace(/[\\\/\?\*\[\]:]/g,'').slice(0,31)||'無題';const base=n;let k=2;while(used.has(n))n=base.slice(0,28)+'_'+k++;used.add(n);return n}
-
 async function buildRecipeSheet(wb,b,r,name){
   const ws=wb.addWorksheet(name,{views:[{showGridLines:false}],pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:1,margins:{left:0.25,right:0.25,top:0.25,bottom:0.25,header:0.1,footer:0.1},horizontalCentered:true}});
   [3.125,30.625,7.625,3.625,8.625,3.125,7.625,6.625,2.625,6.125,5.125,8.625].forEach((w,i)=>ws.getColumn(i+1).width=w);
@@ -1110,17 +1139,18 @@ async function importWorkbook(wb){
   if(!got.length)return alert('「調理レシピ」形式のシートが見つかりませんでした');
   b.recipes.push(...got);S.cur.recipeId=null;S.cur.cat=ALL;save();renderAll();setMode('list');toast(`${b.name} に ${got.length} 件取り込みました`);
 }
-
 /* ===== 起動 ===== */
-window.addEventListener('resize',()=>{if(S&&['quick','memo','task'].includes(S.cur.page))return;if(!isMob())setMode(curRecipe()?'edit':'list')});
+window.addEventListener('resize',()=>{if(S&&TOOLPAGES.includes(S.cur.page))return;if(!isMob())setMode(curRecipe()?'edit':'list')});
 (async()=>{
-  S=await loadState();try{const bk=JSON.parse(localStorage.getItem(KEY+'_bk')||'null');if(bk&&bk.v===2&&(!S||(bk.ts||0)>(S.ts||0)))S=bk}catch(_){}if(!S||S.v!==2){S=initState();await doSave()}
-  S.brands.forEach(b=>{b.props=b.props||[]});S.quick=S.quick||[];S.memos=S.memos||[];S.tasks=S.tasks||[];if(!S.cur.page)S.cur.page='quick';
+  S=await loadState();try{const bk=JSON.parse(localStorage.getItem(KEY+'_bk')||'null');if(bk&&bk.v===2&&(!S||(bk.ts||0)>(S.ts||0)))S=bk}catch(_){}
+  if(!S||S.v!==2){S=initState();await doSave()}
+  S.brands.forEach(b=>{b.props=b.props||[];b.cats=b.cats||[]});S.quick=S.quick||[];S.memos=S.memos||[];S.tasks=S.tasks||[];
+  S.quick.forEach(q=>{if(q.open===undefined)q.open=false});
   if(!S.brands.find(b=>b.id===S.cur.brandId))S.cur={brandId:S.brands[0].id,recipeId:null,cat:ALL};
   S.cur.page='quick';
   $('#saveState').textContent='✓ このブラウザに自動保存';
   if(isMob())S.cur.recipeId=null;
-  renderAll();if(!['quick','memo','task'].includes(S.cur.page))setMode(isMob()?'list':(curRecipe()?'edit':'list'));
+  renderAll();
 })();
 </script>
 </body>
