@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f4e79">
+<title>商品開発 原価計算ツール</title>
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--line:#e2e6ec;--text:#1f2937;--sub:#6b7280;--pri:#1f4e79;--pri2:#2f6db0;--blue:#e5f3ff;--yellow:#fdfed6;--ng:#b91c1c}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","游ゴシック","Meiryo",sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-text-size-adjust:100%}
+button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input,select,textarea{font-family:inherit;font-size:14px}
+.hidden{display:none!important}
+
+header.app{background:var(--pri);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+header.app h1{font-size:17px;margin:0;font-weight:700}
+header.app .sp{flex:1}
+header.app .save{font-size:12px;opacity:.85}
+.hbtn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:6px 10px;font-size:12px}
+
+nav.tabs{display:flex;gap:4px;padding:8px 12px 0;background:#dfe6ef;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:30}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{background:#c9d4e2;border:none;border-radius:8px 8px 0 0;padding:9px 16px;font-weight:700;color:#334155;white-space:nowrap;font-size:14px;flex-shrink:0}
+.tab.active{background:var(--bg);color:var(--pri)}
+.tab .x{display:none;margin-left:8px;color:#94a3b8;font-weight:400}
+.tab.active .x{display:inline}
+.tab.add{background:transparent;color:var(--pri);font-size:18px;padding:6px 12px}
+
+.wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;padding:14px;max-width:1500px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px}
+aside.side{padding:12px;align-self:start;position:sticky;top:52px;max-height:calc(100vh - 66px);overflow:auto}
+.brandttl{font-weight:800;font-size:16px;color:var(--pri)}
+.btn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 12px;font-size:13px;color:var(--text)}
+.btn:hover{background:#f1f5f9}
+.btn.pri{background:var(--pri2);border-color:var(--pri2);color:#fff;font-weight:700}
+.btn.grn{background:#107c41;border-color:#107c41;color:#fff;font-weight:700}
+.btn.red{border-color:#fecaca;color:var(--ng)}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn.block{width:100%}
+input.search{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:7px;margin:8px 0}
+
+/* 分類チップ */
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:#334155;white-space:nowrap}
+.chip.on{background:var(--pri);border-color:var(--pri);color:#fff}
+.chip .n{opacity:.7;margin-left:4px;font-weight:400}
+.chip.set{border-style:dashed;color:var(--pri2)}
+
+.grp h4{margin:10px 2px 4px;font-size:12px;color:var(--sub);font-weight:700;display:flex;justify-content:space-between}
+.ritem{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.ritem:hover{background:#f1f5f9}
+.ritem.active{background:var(--blue);border-color:#bcdcff}
+.ritem .nm{flex:1;min-width:0}
+.ritem .nm b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ritem .nm small{display:block;color:var(--sub);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ritem .rt{text-align:right;font-size:11px;color:var(--sub);white-space:nowrap}
+.ritem .rt b{display:block;font-size:14px;color:var(--pri)}
+.tools{border-top:1px solid var(--line);margin-top:12px;padding-top:10px;display:grid;gap:6px}
+.tools .cap{font-size:11px;color:var(--sub)}
+
+/* 分類管理 */
+.catmgr{border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px;background:#fafcff}
+.catmgr .row{display:flex;gap:4px;align-items:center;margin-bottom:5px}
+.catmgr .row input{flex:1;padding:7px 8px;border:1px solid #cfd6df;border-radius:6px;min-width:0}
+.catmgr .row button{border:1px solid var(--line);background:#fff;border-radius:6px;width:30px;height:32px;padding:0;flex-shrink:0}
+.catmgr .add{display:flex;gap:4px;margin-top:6px}
+.catmgr .add input{flex:1;padding:7px 8px;border:1px solid #93c5fd;border-radius:6px;min-width:0}
+
+main.ed{min-width:0;display:grid;gap:12px;align-content:start}
+.edbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 12px}
+.edbar .ttl{font-weight:800;font-size:16px;flex:1;min-width:140px}
+.back{display:none}
+.sec{padding:14px}
+.sec h3{margin:0 0 10px;font-size:14px;color:var(--pri);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sec h3 .hint{font-weight:400;color:var(--sub);font-size:12px}
+.grid-info{display:grid;grid-template-columns:170px 150px 1fr 160px;gap:10px}
+.fld label{display:block;font-size:11px;color:var(--sub);margin-bottom:3px;font-weight:700}
+.fld input,.fld select,.fld textarea{width:100%;padding:8px 9px;border:1px solid #cfd6df;border-radius:7px;background:#fff}
+.fld.name input{background:var(--yellow);font-weight:700}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#fafcff}
+.kpi .l{font-size:11px;color:var(--sub);font-weight:700}
+.kpi .v{font-size:22px;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:11px;color:var(--sub);margin-top:2px}
+.kpi input{width:100%;font-size:20px;font-weight:800;border:1px solid #cfd6df;border-radius:6px;padding:4px 8px;margin-top:2px;background:#fff}
+.kpi.hl{background:var(--blue);border-color:#bcdcff}.kpi.hl .v{color:var(--pri)}
+
+.ihead,.irow{display:grid;grid-template-columns:28px minmax(180px,1fr) 96px 86px 66px 86px 96px 120px;gap:6px;align-items:center}
+.ihead{font-size:11px;color:var(--sub);font-weight:700;padding:0 6px 6px;border-bottom:2px solid var(--line)}
+.ihead div{text-align:center}.ihead div:nth-child(2){text-align:left}
+.irow{padding:6px;border-bottom:1px solid #eef1f5}
+.c-no{width:24px;height:24px;border-radius:50%;background:var(--blue);color:var(--pri);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.irow input{width:100%;padding:7px;border:1px solid #cfd6df;border-radius:6px;background:#fff;font-variant-numeric:tabular-nums}
+.irow input[type=number],.irow input[inputmode=decimal]{text-align:right}
+.irow label{display:none}
+.c-cost{text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+.c-cost .up{font-size:10px;color:var(--sub);font-weight:400}
+.c-act{display:flex;gap:3px;justify-content:flex-end}
+.c-act button{border:1px solid var(--line);background:#fff;border-radius:6px;min-width:26px;height:28px;font-size:12px;padding:0 4px;color:#475569}
+.c-act button.del:hover{color:var(--ng);border-color:#fecaca}
+.fixednote{font-size:11px;color:var(--sub);text-align:center;grid-column:span 2}
+.itotal{display:flex;justify-content:flex-end;gap:18px;padding:10px 8px 2px;font-weight:800;font-size:15px;align-items:center;flex-wrap:wrap}
+.itotal .btns{margin-right:auto;display:flex;gap:6px}
+
+#suggest{position:absolute;z-index:100;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,42,.18);max-height:260px;overflow:auto}
+#suggest .sh{font-size:11px;color:var(--sub);padding:6px 10px;background:#f8fafc;font-weight:700;position:sticky;top:0}
+#suggest .so{padding:9px 10px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;font-size:13px;border-top:1px solid #f1f5f9}
+#suggest .so.on,#suggest .so:hover{background:var(--blue)}
+#suggest .so small{color:var(--sub);white-space:nowrap}
+
+.step{display:grid;grid-template-columns:70px 1fr 96px;gap:8px;align-items:start;margin-bottom:8px}
+.step select{padding:7px 4px;border:1px solid #cfd6df;border-radius:6px;font-weight:700;background:var(--blue);color:var(--pri)}
+.step textarea{width:100%;padding:7px 9px;border:1px solid #cfd6df;border-radius:6px;resize:vertical;min-height:38px;line-height:1.5}
+
+.photos{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:12px}
+.pbox{border:2px dashed #cbd5e1;border-radius:9px;min-height:170px;display:flex;align-items:center;justify-content:center;position:relative;background:#fafcff;cursor:pointer;overflow:hidden}
+.pbox img{max-width:100%;max-height:240px;display:block}
+.pbox .ph{color:var(--sub);font-size:12px;text-align:center;padding:10px}
+.pbox .rm{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:5px;font-size:11px;padding:3px 7px}
+.plabel{font-size:11px;color:var(--sub);font-weight:700;margin-bottom:4px}
+
+/* 提案会 */
+nav.subtabs{display:flex;gap:6px;padding:10px 14px 0;max-width:1500px;margin:0 auto;overflow-x:auto;scrollbar-width:none;align-items:center}
+nav.subtabs::-webkit-scrollbar{display:none}
+.stab{flex-shrink:0;border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;color:#334155;white-space:nowrap}
+.stab.on{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.stab.rec.on{background:var(--pri);border-color:var(--pri)}
+.stab .n{font-weight:400;opacity:.75;margin-left:4px}
+.stab.add{border-style:dashed;color:#7c3aed}
+.stlabel{font-size:11px;color:var(--sub);font-weight:700;flex-shrink:0;margin-left:6px}
+.pwrap{padding:14px;max-width:1300px;margin:0 auto;display:grid;gap:12px}
+.phead{display:grid;grid-template-columns:1fr 180px auto;gap:10px;align-items:end}
+.pbtns{display:flex;gap:6px;flex-wrap:wrap}
+.psum{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ptable{width:100%;border-collapse:collapse}
+.ptable th{background:#f3e8ff;color:#5b21b6;font-size:12px;padding:8px 6px;text-align:left;white-space:nowrap}
+.ptable td{border-bottom:1px solid #eef1f5;padding:8px 6px;vertical-align:middle}
+.ptable td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ptable .pn b{display:block;font-size:14px;cursor:pointer;color:var(--pri)}
+.mno{display:none}
+@media (max-width:900px){.mno{display:inline}}
+.ptable .pn small{color:var(--sub);font-size:11px}
+.ptable textarea{width:100%;min-width:180px;padding:7px 8px;border:1px solid #cfd6df;border-radius:6px;resize:vertical;min-height:38px;font-size:13px;line-height:1.4}
+.ox{display:inline-flex;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden}
+.ox button{border:none;background:#fff;width:42px;height:36px;font-size:18px;font-weight:800;color:#cbd5e1}
+.ox button+button{border-left:1px solid #cbd5e1}
+.ox button.on.o{background:#dcfce7;color:#15803d}
+.ox button.on.x{background:#fee2e2;color:#b91c1c}
+.pmv{display:flex;gap:3px}
+.pmv button{border:1px solid var(--line);background:#fff;border-radius:6px;width:28px;height:30px;color:#475569}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:150;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal .box{background:#fff;border-radius:12px;width:min(640px,100%);max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+.modal .mh{padding:14px 16px;border-bottom:1px solid var(--line);font-weight:800;color:#5b21b6}
+.modal .mb{padding:8px 16px;overflow:auto;flex:1}
+.modal .mf{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;align-items:center}
+.pk{display:flex;align-items:center;gap:10px;padding:10px 6px;border-bottom:1px solid #f1f5f9;cursor:pointer}
+.pk input{width:20px;height:20px;flex-shrink:0;accent-color:#7c3aed}
+.pk .nm{flex:1;min-width:0}.pk .nm b{display:block;font-size:14px}.pk .nm small{color:var(--sub);font-size:11px}
+.pk .rt{font-size:12px;color:var(--sub);text-align:right;white-space:nowrap}
+.pkg{font-size:12px;color:var(--sub);font-weight:700;margin:10px 0 2px}
+.rprop{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.rprop label{display:inline-flex;gap:5px;align-items:center;font-size:12px;border:1px solid #ddd6fe;background:#faf5ff;border-radius:999px;padding:5px 10px;cursor:pointer;color:#5b21b6;font-weight:700}
+.rprop input{accent-color:#7c3aed}
+@media (max-width:900px){
+  .phead{grid-template-columns:1fr 1fr}.phead .pbtns{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}.phead .pbtns .btn{padding:10px 6px}
+  .psum{grid-template-columns:1fr 1fr}
+  .ptable thead{display:none}
+  .ptable,.ptable tbody,.ptable tr,.ptable td{display:block;width:100%}
+  .ptable tr{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:10px;background:#fff;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .ptable td{border:none;padding:0}
+  .ptable td.tno{display:none}
+  .ptable td.pn{grid-column:1/-1}
+  .ptable td.num{text-align:left;font-size:15px;font-weight:700}
+  .ptable td.num::before{content:attr(data-l);display:block;font-size:10px;color:var(--sub);font-weight:700}
+  .ptable td.oxc{grid-column:1/2}
+  .ptable td.memo{grid-column:1/-1}
+  .ptable td.mv{grid-column:2/4;grid-row:3;justify-self:end;align-self:center}
+  .ptable td.oxc{grid-row:3}
+  .ptable textarea{font-size:16px}
+  .ox button{width:52px;height:42px}
+  .pmv button{width:36px;height:38px}
+}
+body.v-prop .fab,body.v-quick .fab,body.v-quick .mobbar{display:none!important}
+.tab.tool{background:#e2e8f0;color:#334155}
+.tab.tool.active{background:var(--bg);color:#0f766e}
+.tab .bdg{display:inline-block;min-width:18px;padding:0 5px;margin-left:5px;border-radius:999px;background:#ef4444;color:#fff;font-size:11px;line-height:18px}
+.nwrap{padding:14px;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:14px}
+.nwrap .side{padding:12px;align-self:start;position:sticky;top:52px;max-height:calc(100vh - 66px);overflow:auto}
+.nitem{padding:10px;border-radius:8px;cursor:pointer;border:1px solid transparent;margin-bottom:4px}
+.nitem:hover{background:#f1f5f9}.nitem.active{background:#ccfbf1;border-color:#5eead4}
+.nitem b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nitem small{display:block;color:var(--sub);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nitem .pin{color:#f59e0b}
+.ned{padding:14px;display:grid;gap:10px;align-content:start}
+.ned .ntitle{font-size:18px;font-weight:800;border:1px solid #cfd6df;border-radius:8px;padding:10px;width:100%}
+.ned textarea{width:100%;min-height:55vh;border:1px solid #cfd6df;border-radius:8px;padding:12px;font-size:15px;line-height:1.7;resize:vertical}
+.ned .nbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ned .nbar input{padding:7px 9px;border:1px solid #cfd6df;border-radius:7px}
+.twrap{padding:14px;max-width:800px;margin:0 auto;display:grid;gap:12px}
+.tadd{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px}
+.tadd input,.tadd select{padding:9px;border:1px solid #cfd6df;border-radius:7px;width:100%}
+.tfil{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.task{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px;border-bottom:1px solid #eef1f5}
+.task .ck{width:26px;height:26px;border-radius:50%;border:2px solid #94a3b8;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+.task.done .ck{background:#10b981;border-color:#10b981}
+.task.done .tt{text-decoration:line-through;color:#94a3b8}
+.task .tt{width:100%;border:1px solid transparent;border-radius:6px;padding:4px 6px;font-size:15px;font-weight:700;background:transparent}
+.task .tt:hover,.task .tt:focus{border-color:#cfd6df;background:#fff}
+.task .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;align-items:center}
+.task .meta input,.task .meta select{border:1px solid #e2e8f0;border-radius:6px;padding:4px 6px;font-size:12px;background:#fff}
+.task .tn{width:100%;margin-top:6px;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-size:12px;min-height:30px;resize:vertical}
+.due{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.due.over{background:#fee2e2;color:#b91c1c}.due.today{background:#fef3c7;color:#92400e}.due.soon{background:#e0f2fe;color:#075985}
+.pri-h{color:#b91c1c;font-weight:800}
+@media (max-width:900px){
+  .nwrap{grid-template-columns:1fr;padding:10px}
+  .nwrap .side{position:static;max-height:none}
+  body.n-edit .nwrap .side{display:none}body.n-list .nwrap .ned{display:none}
+  .ned textarea{font-size:16px;min-height:60vh}.ned .ntitle{font-size:17px}
+  .tadd input{font-size:16px}.tadd .btn{padding:0 18px}
+  .task .tt{font-size:16px}.task .meta input,.task .meta select{font-size:14px;padding:6px}
+  .twrap{padding:10px}
+}
+/* 簡易計算 */
+.tab.quick{background:#fde68a;color:#78350f}
+.tab.quick.active{background:var(--bg);color:#92400e}
+.qwrap{padding:14px;max-width:1100px;margin:0 auto;display:grid;gap:12px}
+.qtop{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.qtop h2{margin:0;font-size:17px;color:#92400e;flex:1}
+.qcard{padding:14px;border-left:5px solid #f59e0b}
+.qhead{display:grid;grid-template-columns:1fr 200px auto;gap:10px;align-items:end;margin-bottom:10px}
+.qhead .x{border:1px solid #fecaca;background:#fff;color:var(--ng);border-radius:7px;height:36px;padding:0 12px}
+.qh,.qr{display:grid;grid-template-columns:minmax(150px,1fr) 100px 90px 80px 90px 96px 34px;gap:6px;align-items:center}
+.qh{font-size:11px;color:var(--sub);font-weight:700;padding:0 2px 5px;border-bottom:2px solid var(--line)}
+.qh div{text-align:center}.qh div:first-child{text-align:left}
+.qr{padding:5px 2px;border-bottom:1px solid #eef1f5}
+.qr input,.qr select{width:100%;padding:7px;border:1px solid #cfd6df;border-radius:6px;background:#fff}
+.qr input[inputmode=decimal]{text-align:right}
+.qr label{display:none}
+.qr .qc{text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+.qr .del{border:1px solid var(--line);background:#fff;border-radius:6px;height:32px;color:#475569}
+.qfoot{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:10px;align-items:stretch;margin-top:10px}
+.qfoot .kpi input{font-size:18px}
+.qfoot .kpi .v{font-size:20px}
+.qadd{align-self:center}
+@media (max-width:900px){
+  .qwrap{padding:10px}
+  .qhead{grid-template-columns:1fr 1fr}.qhead .fld:first-child{grid-column:1/-1}
+  .qh{display:none}
+  .qr{grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:9px;padding:9px;margin-bottom:8px;background:#fafcff}
+  .qr .q-name{grid-column:1/6;grid-row:1}.qr .del{grid-column:6/7;grid-row:1;align-self:end;height:40px}
+  .qr .q-price,.qr .q-pack,.qr .q-unit{grid-column:span 2}
+  .qr .q-qty{grid-column:1/4}.qr .qc{grid-column:4/7;align-self:end;font-size:18px;padding-bottom:6px}
+  .qr label{display:block;font-size:10px;color:var(--sub);font-weight:700;margin-bottom:2px}
+  .qr input,.qr select{font-size:16px;padding:9px 7px}
+  .qfoot{grid-template-columns:1fr 1fr}.qfoot .qadd{grid-column:1/-1}.qfoot .qadd .btn{width:100%;padding:11px}
+  .qfoot .kpi:last-child{grid-column:1/-1}
+  .qhead input{font-size:16px}
+}
+.empty{padding:36px;text-align:center;color:var(--sub);line-height:1.8}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:200;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:.95}
+.mobbar{display:none}
+.fab{display:none}
+
+/* ===== スマホ ===== */
+@media (max-width:900px){
+  header.app{padding:8px 12px}
+  header.app h1{font-size:15px}
+  header.app .save{display:none}
+  .wrap{grid-template-columns:1fr;padding:10px;gap:10px}
+  aside.side{position:static;max-height:none;border:none;background:transparent;padding:0}
+  body.m-edit aside.side{display:none}
+  body.m-list main.ed{display:none}
+  .back{display:inline-block}
+  .edbar{position:sticky;top:44px;z-index:20;padding:8px 10px;gap:6px}
+  .edbar .ttl{font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1 1 100%;order:-1}
+  .edbar .btn{flex:1;padding:8px 4px;font-size:12px}
+  .ritem{background:#fff;border:1px solid var(--line);margin-bottom:6px;padding:12px}
+  .ritem .nm b{font-size:15px}
+  .grid-info{grid-template-columns:1fr 1fr}
+  .grid-info .fld.name{grid-column:1/-1;order:-1}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi .v{font-size:20px}
+  .sec{padding:12px}
+  .ihead{display:none}
+  .irow{grid-template-columns:repeat(6,1fr);gap:6px;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff}
+  .irow .c-no{grid-column:1;grid-row:1;align-self:center}
+  .irow .c-name{grid-column:2/7;grid-row:1;margin-left:-14px}
+  .irow .c-price{grid-column:1/3}.irow .c-pack{grid-column:3/5}.irow .c-unit{grid-column:5/7}
+  .irow .fixednote{grid-column:1/5;grid-row:2;text-align:left;align-self:center}
+  .irow.fixed .c-unit{grid-column:5/7;grid-row:2}
+  .irow .c-qty{grid-column:1/3}.irow .c-cost{grid-column:3/5;align-self:end;font-size:18px;padding-bottom:4px}
+  .irow .c-act{grid-column:5/7;align-self:end}
+  .irow.fixed .c-cost{grid-column:3/5}
+  .irow label{display:block;font-size:10px;color:var(--sub);font-weight:700;margin-bottom:2px}
+  .irow input{font-size:16px;padding:9px 8px}
+  .c-act button{height:36px;min-width:32px;font-size:13px}
+  .c-act button.mode{display:none}
+  .irow .c-act [data-act=up],.irow .c-act [data-act=down]{display:none}
+  .irow .c-cost{grid-column:3/6!important;padding-right:4px}
+  .irow .c-act{grid-column:6/7!important;flex-direction:column;gap:4px}
+  .irow .c-act button{width:100%;height:30px}
+  body.m-list .mobbar{display:none}
+  .edbar{top:42px}
+  .irow .more{display:inline-block}
+  .itotal .btns{width:100%}.itotal .btns .btn{flex:1;padding:10px}
+  .photos{grid-template-columns:1fr}
+  .step{grid-template-columns:58px 1fr}
+  .step .c-act{grid-column:2;justify-content:flex-end}
+  .fld input,.fld select,.fld textarea,.kpi input,input.search,.catmgr input,.step textarea{font-size:16px}
+  .mobbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0f2a44;color:#fff;padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:6px;align-items:center}
+  .mobbar div{flex:1;text-align:center;font-size:11px;opacity:.95}.mobbar b{display:block;font-size:16px}
+  .mobbar button{background:#2f6db0;border:none;color:#fff;border-radius:8px;padding:10px 12px;font-weight:700;font-size:13px;white-space:nowrap}
+  body.m-edit{padding-bottom:76px}
+  body.m-list .fab{display:block;position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:40;background:var(--pri2);color:#fff;border:none;border-radius:999px;padding:14px 20px;font-weight:800;font-size:15px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  body.m-list{padding-bottom:80px}
+  body.m-list .side .newbtn{display:none}
+}
+@media (min-width:901px){.c-act .more{display:none}.chips{flex-wrap:wrap}}
+
+/* ===== 印刷 ===== */
+#printArea{display:none}
+.plsheet{width:194mm;font-family:"Yu Gothic","游ゴシック","Hiragino Kaku Gothic ProN",sans-serif;color:#000;font-size:10pt}
+.plsheet+.psheet,.psheet+.plsheet{page-break-before:always;break-before:page}
+.plsheet .ttl{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #000;padding-bottom:4px;margin-bottom:4px}
+.plsheet .ttl b{font-size:16pt}
+.plsheet .meta{display:flex;gap:16px;font-size:9pt;margin:4px 0 8px}
+.plsheet .meta span{border-bottom:1px solid #000;min-width:40mm;display:inline-block}
+.plsheet table{width:100%;border-collapse:collapse}
+.plsheet th,.plsheet td{border:1px solid #000;padding:4px 5px;vertical-align:middle}
+.plsheet thead{display:table-header-group}
+.plsheet th{background:#f3e8ff;font-size:9pt;white-space:nowrap}
+.plsheet tr{page-break-inside:avoid;break-inside:avoid}
+.plsheet td.no{text-align:center;width:8mm;background:#f8f5ff}
+.plsheet td.nm{width:52mm}.plsheet td.nm b{font-size:10.5pt;display:block}.plsheet td.nm small{font-size:8pt;color:#333}
+.plsheet td.num{text-align:right;white-space:nowrap;width:18mm}
+.plsheet td.oxcell{width:24mm;text-align:center;white-space:nowrap}
+.plsheet .bx{display:inline-flex;align-items:center;justify-content:center;width:7.5mm;height:7.5mm;border:1px solid #000;border-radius:50%;font-size:12pt;font-weight:700;margin:0 1mm;color:#bbb}
+.plsheet .bx.on{background:#000;color:#fff}
+.plsheet td.memo{height:20mm;vertical-align:top;white-space:pre-wrap;font-size:9pt;line-height:1.5}
+.plsheet tfoot td{font-weight:700;background:#fafafa}
+.plsheet .foot{margin-top:6px;font-size:8pt;text-align:right;color:#444}
+@page{size:A4 portrait;margin:8mm}
+@media print{body{background:#fff;padding:0!important}body>*:not(#printArea){display:none!important}#printArea{display:block}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.psheet{width:194mm;height:262mm;overflow:hidden;font-family:"Yu Gothic","游ゴシック","Hiragino Kaku Gothic ProN",sans-serif;font-size:9.5pt;color:#000;display:flex;flex-direction:column}
+.psheet+.psheet{page-break-before:always;break-before:page}
+.psheet table{border-collapse:collapse;width:100%}
+.psheet td,.psheet th{border:1px solid #000;padding:3px 5px;vertical-align:middle}
+.psheet th{background:#e5f3ff;font-weight:700;text-align:center;white-space:nowrap}
+.ps-ttl{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1.5px solid #000;padding-bottom:3px;margin-bottom:5px}
+.ps-ttl b{font-size:15pt;letter-spacing:.2em}
+.ps-yel{background:#fdfed6}.ps-hl{background:#ffff00;text-align:right;font-weight:700}
+.ps-name{font-size:13pt;font-weight:700}
+.ps-body{display:grid;grid-template-columns:57% 43%;margin-top:6px;align-items:start}
+.ps-body td.no{background:#e5f3ff;text-align:center;width:22px}
+.ps-body td.num{text-align:right;white-space:nowrap}
+.ps-steps td.sn{background:#e5f3ff;text-align:center;width:22px;font-weight:700}
+.ps-steps td{white-space:pre-wrap;line-height:1.45}
+.ps-foot{display:grid;grid-template-columns:57% 43%;margin-top:8px;flex:1;border:1px solid #000;min-height:70mm}
+.ps-foot>div{padding:5px 7px}.ps-foot>div+div{border-left:1px solid #000}
+.ps-foot h5{margin:0 0 5px;font-size:9.5pt}
+.ps-foot .imgs{display:flex;gap:6px;align-items:flex-start}
+.ps-foot img{max-width:100%;max-height:85mm;object-fit:contain}
+.ps-foot .imgs img{max-width:49%}.ps-foot .imgs.one img{max-width:100%}
+.ps-notes{white-space:pre-wrap;line-height:1.55}
+.ps-meta{font-size:8pt;color:#444;text-align:right;margin-top:3px}
+</style>
+</head>
+<body class="m-list">
+<header class="app">
+  <h1>🍳 商品開発 原価計算</h1>
+  <span class="save" id="saveState">読み込み中…</span>
+  <span class="sp"></span>
+  <button class="hbtn" id="btnBackup">📤 データ書き出し</button>
+  <button class="hbtn" id="btnRestore">📥 データ取り込み</button>
+  <input type="file" id="fileRestore" accept=".json,application/json" class="hidden">
+  <input type="file" id="fileXlsx" accept=".xlsx" class="hidden">
+  <input type="file" id="fileImg" accept="image/*" class="hidden">
+</header>
+<nav class="tabs" id="tabs"></nav>
+<nav class="subtabs" id="subtabs"></nav>
+<div id="view"></div>
+<button class="fab" id="fab">＋ 新規商品</button>
+<div class="mobbar" id="mobbar"></div>
+<div id="suggest" class="hidden"></div>
+<div class="toast" id="toast"></div>
+<div id="printArea"></div>
+<datalist id="unitList"><option value="g"><option value="ml"><option value="個"><option value="本"><option value="枚"><option value="尾"><option value="切"><option value="貫"><option value="袋"><option value="缶"></datalist>
+
+<script>
+const DEFAULT_BRANDS=['CONA','ナポリマン','焼売のジョー','金目樽','寿司'];
+const DB_NAME='genkaTool',STORE='kv',KEY='state_v2';
+const EXCEL_CDN=['https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js','https://unpkg.com/exceljs@4.4.0/dist/exceljs.min.js'];
+const NOCAT='__none',ALL='__all';
+
+let S=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const num=v=>{if(v===''||v==null)return NaN;return parseFloat(String(v).normalize('NFKC').replace(/[,¥円\s]/g,''))};
+const nz=v=>{const n=num(v);return isFinite(n)?n:0};
+const yen=(v,d=1)=>isFinite(v)?'¥'+v.toLocaleString('ja-JP',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const pct=v=>isFinite(v)?(v*100).toFixed(1)+'%':'—';
+const norm=s=>String(s||'').normalize('NFKC').toLowerCase().replace(/[\s　]/g,'');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const isMob=()=>window.innerWidth<=900;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2200)}
+
+/* ===== 保存 ===== */
+function idb(){return new Promise((res,rej)=>{if(!window.indexedDB)return rej('no');const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function loadState(){try{const db=await idb();return await new Promise(res=>{const g=db.transaction(STORE,'readonly').objectStore(STORE).get(KEY);g.onsuccess=()=>res(g.result||null);g.onerror=()=>res(null)})}catch(e){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(_){return null}}}
+let saveTimer=null;
+const flush=()=>{if(saveTimer){clearTimeout(saveTimer);saveTimer=null;try{localStorage.setItem(KEY+'_bk',JSON.stringify(S))}catch(_){}doSave()}};
+window.addEventListener('pagehide',flush);document.addEventListener('visibilitychange',()=>{if(document.hidden)flush()});
+function save(){if(S)S.ts=Date.now();$('#saveState').textContent='保存中…';clearTimeout(saveTimer);saveTimer=setTimeout(doSave,400)}
+async function doSave(){saveTimer=null;
+  const ok=()=>{const d=new Date();$('#saveState').textContent='✓ 自動保存 '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')};
+  try{const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(JSON.parse(JSON.stringify(S)),KEY);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});ok()}
+  catch(e){try{localStorage.setItem(KEY,JSON.stringify(S));ok()}catch(_){$('#saveState').textContent='⚠ 保存失敗'}}
+}
+function initState(){const brands=DEFAULT_BRANDS.map(n=>({id:uid('b'),name:n,cats:[],recipes:[],props:[]}));return{v:2,brands,quick:[],memos:[],tasks:[],cur:{brandId:brands[0].id,recipeId:null,cat:ALL,page:'quick'}}}
+
+/* ===== アクセサ・計算 ===== */
+const curBrand=()=>S.brands.find(b=>b.id===S.cur.brandId)||S.brands[0];
+const curRecipe=()=>curBrand().recipes.find(r=>r.id===S.cur.recipeId)||null;
+const catName=(b,id)=>b.cats.find(c=>c.id===id)?.name||'';
+function blankItem(){return{name:'',price:'',pack:'',unit:'g',qty:'',mode:'calc'}}
+function newRecipe(catId){return{id:uid('r'),catId:catId&&catId!==ALL&&catId!==NOCAT?catId:'',short:'',name:'',price:'',portion:'',items:[blankItem(),blankItem(),blankItem()],steps:[{text:''}],notes:'',photoNote:'',photo:'',photo2:'',updated:today()}}
+function itemCost(it){if(it.mode==='fixed')return nz(it.cost);const p=nz(it.pack);return p>0?nz(it.price)/p*nz(it.qty):0}
+function recipeCost(r){return r.items.reduce((a,it)=>a+itemCost(it),0)}
+function rateOf(r){const p=num(r.price);return p>0?recipeCost(r)/p:NaN}
+function setMode(m){document.body.classList.toggle('m-edit',m==='edit');document.body.classList.toggle('m-list',m!=='edit')}
+
+/* ===== ブランドタブ ===== */
+function renderTabs(){
+  const q=['quick','memo','task'].includes(S.cur.page),pg=S.cur.page,open=S.tasks.filter(t=>!t.done).length;
+  $('#tabs').innerHTML=`<button class="tab quick ${pg==='quick'?'active':''}" id="tabQuick">🧮 簡易計算</button><button class="tab tool ${pg==='memo'?'active':''}" data-pg="memo">📝 メモ帳</button><button class="tab tool ${pg==='task'?'active':''}" data-pg="task">✅ タスク${open?`<span class="bdg" style="background:#64748b">${open}</span>`:''}</button>`+S.brands.map(b=>`<button class="tab ${!q&&b.id===S.cur.brandId?'active':''}" data-b="${b.id}">${esc(b.name)}<span class="x" data-del="${b.id}">✕</span></button>`).join('')+`<button class="tab add" id="addBrand" title="ブランド追加">＋</button>`;
+  $('#tabs .tab.active')?.scrollIntoView({inline:'nearest',block:'nearest'});
+}
+$('#tabs').addEventListener('click',e=>{
+  const del=e.target.closest('[data-del]');
+  if(del){e.stopPropagation();const b=S.brands.find(x=>x.id===del.dataset.del);if(S.brands.length<=1)return toast('最後のブランドは削除できません');
+    if(!confirm(`ブランド「${b.name}」と商品${b.recipes.length}件を削除しますか？`))return;
+    S.brands=S.brands.filter(x=>x!==b);S.cur={brandId:S.brands[0].id,recipeId:null,cat:ALL};save();renderAll();return}
+  const tb=e.target.closest('[data-b]');
+  const pgb=e.target.closest('[data-pg]');if(pgb){S.cur.page=pgb.dataset.pg;save();renderAll();window.scrollTo(0,0);return}
+  if(e.target.closest('#tabQuick')){S.cur.page='quick';save();renderAll();window.scrollTo(0,0);return}
+  if(tb){const wasQ=['quick','memo','task'].includes(S.cur.page);S.cur.page='brand';if(wasQ&&S.cur.brandId===tb.dataset.b){save();renderAll();return}if(S.cur.brandId!==tb.dataset.b){S.cur={brandId:tb.dataset.b,recipeId:null,cat:ALL,view:'rec',page:'brand'};catEdit=false;sideQuery=''}setMode('list');save();renderAll();return}
+  if(e.target.closest('#addBrand')){const n=prompt('追加するブランド名');if(!n||!n.trim())return;const b={id:uid('b'),name:n.trim(),cats:[],recipes:[],props:[]};S.brands.push(b);S.cur={brandId:b.id,recipeId:null,cat:ALL,page:'brand'};save();renderAll()}
+});
+$('#tabs').addEventListener('dblclick',e=>{const tb=e.target.closest('[data-b]');if(!tb)return;const b=S.brands.find(x=>x.id===tb.dataset.b);const n=prompt('ブランド名を変更',b.name);if(n&&n.trim()){b.name=n.trim();save();renderAll()}});
+
+function renderAll(){renderTabs();
+  const q=['quick','memo','task'].includes(S.cur.page);document.body.classList.toggle('v-quick',q);$('#subtabs').classList.toggle('hidden',q);
+  document.body.classList.remove('n-edit','n-list');
+  if(q){document.body.classList.remove('v-prop');setMode('list');$('#mobbar').innerHTML='';({quick:renderQuick,memo:renderMemo,task:renderTask})[S.cur.page]();return}renderSubtabs();document.body.classList.toggle('v-prop',!!curProp());const pr=curProp();if(pr){renderProp(pr)}else{S.cur.view='rec';renderBrand()}}
+const curProp=()=>S.cur.view&&S.cur.view!=='rec'?curBrand().props.find(p=>p.id===S.cur.view)||null:null;
+const propItems=(b,p)=>p.items.filter(x=>b.recipes.some(r=>r.id===x.rid));
+function renderSubtabs(){
+  const b=curBrand(),v=S.cur.view||'rec';
+  $('#subtabs').innerHTML=`<button class="stab rec ${v==='rec'?'on':''}" data-v="rec">📋 レシピ<span class="n">${b.recipes.length}</span></button><span class="stlabel">提案会：</span>`
+   +b.props.map(p=>`<button class="stab ${v===p.id?'on':''}" data-v="${p.id}">🍽 ${esc(p.name)}<span class="n">${propItems(b,p).length}</span></button>`).join('')
+   +`<button class="stab add" id="addProp">＋ 提案会を作成</button>`;
+  $('#subtabs').querySelectorAll('[data-v]').forEach(el=>el.onclick=()=>{S.cur.view=el.dataset.v;save();renderAll();window.scrollTo(0,0)});
+  $('#addProp').onclick=()=>{const n=(prompt('提案会の名前（例：2026冬メニュー提案会）')||'').trim();if(!n)return;const p={id:uid('p'),name:n,date:'',items:[]};b.props.push(p);S.cur.view=p.id;save();renderAll()};
+  $('#subtabs .stab.on')?.scrollIntoView({inline:'nearest',block:'nearest'});
+}
+
+/* ===== 一覧（サイド） ===== */
+let sideQuery='',catEdit=false;
+function renderBrand(){
+  const b=curBrand();
+  $('#view').innerHTML=`<div class="wrap">
+    <aside class="card side" id="side">
+      <div style="display:flex;align-items:center;gap:8px"><div class="brandttl" style="flex:1">${esc(b.name)}</div><span style="font-size:12px;color:var(--sub)" id="bcount">${b.recipes.length}品</span></div>
+      <button class="btn pri block newbtn" id="btnNew" style="margin-top:8px">＋ 新規商品を作成</button>
+      <input class="search" id="sideSearch" placeholder="🔍 商品名・略称で検索" value="${esc(sideQuery)}">
+      <div class="chips" id="chips"></div>
+      <div id="catmgr"></div>
+      <div id="rlist"></div>
+      <div class="tools">
+        <div class="cap" id="toolCap"></div>
+        <button class="btn grn block" id="btnXlsList">📊 Excel出力</button>
+        <button class="btn block" id="btnPdfList">🖨 PDF出力</button>
+        <button class="btn block" id="btnImport">📥 レシピExcelを取り込む</button>
+      </div>
+    </aside>
+    <main class="ed" id="ed"></main></div>`;
+  $('#btnNew').onclick=$('#fab').onclick=createRecipe;
+  $('#sideSearch').oninput=e=>{sideQuery=e.target.value;renderList()};
+  $('#btnXlsList').onclick=()=>exportExcel(b,visibleRecipes());
+  $('#btnPdfList').onclick=()=>printRecipes(b,visibleRecipes());
+  $('#btnImport').onclick=()=>$('#fileXlsx').click();
+  renderChips();renderList();renderEditor();
+}
+function createRecipe(){const b=curBrand();const r=newRecipe(S.cur.cat);b.recipes.push(r);S.cur.recipeId=r.id;save();renderList();renderEditor();setMode('edit');window.scrollTo(0,0);setTimeout(()=>$('#f_name')?.focus(),60)}
+function visibleRecipes(){
+  const b=curBrand(),q=norm(sideQuery),c=S.cur.cat;
+  const order=id=>{const i=b.cats.findIndex(x=>x.id===id);return i<0?9999:i};
+  return b.recipes.filter(r=>(c===ALL||(c===NOCAT?!catName(b,r.catId):r.catId===c))&&(!q||norm(r.name+r.short).includes(q)))
+    .sort((x,y)=>order(x.catId)-order(y.catId));
+}
+function renderChips(){
+  const b=curBrand();const cnt=id=>b.recipes.filter(r=>id===NOCAT?!catName(b,r.catId):r.catId===id).length;
+  const none=cnt(NOCAT);
+  if(S.cur.cat!==ALL&&S.cur.cat!==NOCAT&&!b.cats.find(c=>c.id===S.cur.cat))S.cur.cat=ALL;
+  $('#chips').innerHTML=`<button class="chip ${S.cur.cat===ALL?'on':''}" data-c="${ALL}">すべて<span class="n">${b.recipes.length}</span></button>`
+    +b.cats.map(c=>`<button class="chip ${S.cur.cat===c.id?'on':''}" data-c="${c.id}">${esc(c.name)}<span class="n">${cnt(c.id)}</span></button>`).join('')
+    +(none&&b.cats.length?`<button class="chip ${S.cur.cat===NOCAT?'on':''}" data-c="${NOCAT}">未分類<span class="n">${none}</span></button>`:'')
+    +`<button class="chip set" id="catSet">${catEdit?'✓ 完了':'⚙ 分類を編集'}</button>`;
+  $('#chips').querySelectorAll('[data-c]').forEach(el=>el.onclick=()=>{S.cur.cat=el.dataset.c;save();renderChips();renderList()});
+  $('#catSet').onclick=()=>{catEdit=!catEdit;renderChips()};
+  renderCatMgr();
+}
+function renderCatMgr(){
+  const b=curBrand(),box=$('#catmgr');
+  if(!catEdit){box.innerHTML='';return}
+  box.innerHTML=`<div class="catmgr">${b.cats.map((c,i)=>`<div class="row" data-i="${i}"><input value="${esc(c.name)}" data-ren><button data-mv="-1">↑</button><button data-mv="1">↓</button><button data-cdel style="color:var(--ng)">✕</button></div>`).join('')||'<div style="font-size:12px;color:var(--sub);margin-bottom:4px">分類はまだありません</div>'}
+    <div class="add"><input id="newCat" placeholder="新しい分類名（例：前菜）"><button class="btn pri sm" id="addCat">追加</button></div></div>`;
+  const add=()=>{const v=$('#newCat').value.trim();if(!v)return;if(b.cats.some(c=>c.name===v))return toast('同じ名前の分類があります');b.cats.push({id:uid('c'),name:v});save();renderChips();setTimeout(()=>$('#newCat')?.focus(),30);if(curRecipe())renderEditor()};
+  $('#addCat').onclick=add;$('#newCat').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();add()}};
+  box.querySelectorAll('.row').forEach(row=>{const i=+row.dataset.i,c=b.cats[i];
+    row.querySelector('[data-ren]').onchange=e=>{const v=e.target.value.trim();if(v){c.name=v;save();renderChips();renderList();if(curRecipe())renderEditor()}};
+    row.querySelectorAll('[data-mv]').forEach(bt=>bt.onclick=()=>{const j=i+ +bt.dataset.mv;if(j<0||j>=b.cats.length)return;[b.cats[i],b.cats[j]]=[b.cats[j],b.cats[i]];save();renderChips();renderList()});
+    row.querySelector('[data-cdel]').onclick=()=>{const n=b.recipes.filter(r=>r.catId===c.id).length;if(!confirm(`分類「${c.name}」を削除しますか？${n?`\n使用中の${n}品は「未分類」になります。`:''}`))return;
+      b.recipes.forEach(r=>{if(r.catId===c.id)r.catId=''});b.cats.splice(i,1);save();renderChips();renderList();if(curRecipe())renderEditor()}});
+}
+function renderList(){
+  const b=curBrand(),list=visibleRecipes();
+  const lbl=S.cur.cat===ALL?'すべて':S.cur.cat===NOCAT?'未分類':catName(b,S.cur.cat);
+  const bc=$('#bcount');if(bc)bc.textContent=b.recipes.length+'品';
+  $('#toolCap').textContent=`表示中の「${lbl}」${list.length}品を出力`;
+  const groups=[];list.forEach(r=>{const k=catName(b,r.catId)||'未分類';let g=groups.find(x=>x.k===k);if(!g)groups.push(g={k,a:[]});g.a.push(r)});
+  $('#rlist').innerHTML=list.length?groups.map(g=>`<div class="grp"><h4><span>${esc(g.k)}</span><span>${g.a.length}品</span></h4>${g.a.map(r=>{
+    const c=recipeCost(r),rt=rateOf(r);
+    return `<div class="ritem ${r.id===S.cur.recipeId?'active':''}" data-r="${r.id}"><div class="nm"><b>${esc(r.name||'（商品名未入力）')}</b><small>${esc(r.short||'')}${r.short?' ・ ':''}原価 ${yen(c,1)}${num(r.price)>0?' ・ 売価 ¥'+num(r.price).toLocaleString():''}</small></div><div class="rt">原価率<b>${pct(rt)}</b></div></div>`}).join('')}</div>`).join('')
+    :`<div class="empty">${b.recipes.length?'該当する商品がありません':'まだ商品がありません。<br>「＋ 新規商品」から作成してください。'}</div>`;
+  $('#rlist').querySelectorAll('[data-r]').forEach(el=>el.onclick=()=>{S.cur.recipeId=el.dataset.r;save();renderList();renderEditor();setMode('edit');window.scrollTo(0,0)});
+}
+let listT=null;function renderListSoft(){clearTimeout(listT);listT=setTimeout(()=>{if(!$('#rlist'))return;renderList();renderChips()},300)}
+
+/* ===== 編集画面 ===== */
+function renderEditor(){
+  const b=curBrand(),r=curRecipe(),ed=$('#ed');
+  if(!r){ed.innerHTML=`<div class="card empty">左の一覧から商品を選ぶか、<br>「＋ 新規商品を作成」で原価計算を始めてください。</div>`;$('#mobbar').innerHTML='';setMode('list');return}
+  ed.innerHTML=`
+  <div class="card edbar">
+    <button class="btn back" id="btnBack">← 一覧</button>
+    <div class="ttl" id="edTtl">${esc(r.name||'新規商品')}</div>
+    <button class="btn" id="btnPdf">🖨 PDF</button>
+    <button class="btn grn" id="btnXls">📊 Excel</button>
+    <button class="btn" id="btnDup">⧉ 複製</button>
+    <button class="btn red" id="btnDel">🗑 削除</button>
+  </div>
+  <div class="card sec">
+    <h3>基本情報</h3>
+    <div class="grid-info">
+      <div class="fld"><label>レシピ分類</label><select id="f_cat"><option value="">未分類</option>${b.cats.map(c=>`<option value="${c.id}" ${r.catId===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}<option value="__new">＋ 新しい分類を作成…</option></select></div>
+      <div class="fld"><label>略称</label><input id="f_short" value="${esc(r.short)}" placeholder="例：きのアヒ"></div>
+      <div class="fld name"><label>商品名</label><input id="f_name" value="${esc(r.name)}" placeholder="例：3種きのこと鶏肉のアヒージョ"></div>
+      <div class="fld"><label>ポーション（器）</label><input id="f_portion" value="${esc(r.portion)}" placeholder="例：丸皿"></div>
+    </div>
+    ${b.props.length?`<div class="rprop"><span style="font-size:11px;color:var(--sub);font-weight:700;align-self:center">提案会に入れる：</span>${b.props.map(p=>`<label><input type="checkbox" data-prop="${p.id}" ${p.items.some(x=>x.rid===r.id)?'checked':''}>${esc(p.name)}</label>`).join('')}</div>`:''}
+  </div>
+  <div class="card sec">
+    <div class="kpis">
+      <div class="kpi"><div class="l">最終原価</div><div class="v" id="k_cost">—</div><div class="s" id="k_cnt"></div></div>
+      <div class="kpi"><div class="l">想定売価（税抜）</div><input id="f_price" inputmode="decimal" value="${esc(r.price)}" placeholder="例：600"><div class="s" id="k_tax"></div></div>
+      <div class="kpi hl"><div class="l">原価率</div><div class="v" id="k_rate">—</div></div>
+      <div class="kpi"><div class="l">粗利（1品）</div><div class="v" id="k_gp">—</div></div>
+    </div>
+  </div>
+  <div class="card sec">
+    <h3>使用商材 <span class="hint">原価＝仕入値÷内容量×使用量</span></h3>
+    <div class="ihead"><div>No</div><div>商材名</div><div>仕入値(円)</div><div>内容量</div><div>単位</div><div>使用量</div><div>原価</div><div></div></div>
+    <div id="items"></div>
+    <div class="itotal"><div class="btns"><button class="btn pri" id="addItem">＋ 商材を追加</button></div><span>最終原価</span><span id="t_cost">—</span></div>
+  </div>
+  <div class="card sec">
+    <h3>作業工程</h3>
+    <div id="steps"></div>
+    <button class="btn sm" id="addStep">＋ 工程を追加</button>
+  </div>
+  <div class="card sec">
+    <h3>盛り付け例・注意事項</h3>
+    <div class="photos">
+      <div><div class="plabel">盛り付け写真</div><div class="pbox" data-img="photo">${r.photo?`<img src="${r.photo}"><button class="rm" data-rm="photo">削除</button>`:'<div class="ph">📷 タップして写真を追加</div>'}</div>
+        <div class="fld" style="margin-top:6px"><input id="f_photoNote" value="${esc(r.photoNote)}" placeholder="写真の補足（例：※ 実際は丸皿）"></div></div>
+      <div><div class="plabel">参考画像（任意）</div><div class="pbox" data-img="photo2">${r.photo2?`<img src="${r.photo2}"><button class="rm" data-rm="photo2">削除</button>`:'<div class="ph">🖼 タップして画像を追加</div>'}</div></div>
+      <div class="fld"><label>注意事項</label><textarea id="f_notes" rows="8" placeholder="保存方法・HTなど">${esc(r.notes)}</textarea></div>
+    </div>
+  </div>`;
+  renderItems();renderSteps();refreshCalc();
+  ['short','name','portion','price','photoNote','notes'].forEach(k=>{const el=$('#f_'+k);el.addEventListener('input',()=>{r[k]=el.value;r.updated=today();save();refreshCalc();if(k==='name')$('#edTtl').textContent=el.value||'新規商品';renderListSoft()})});
+  $('#f_cat').onchange=e=>{let v=e.target.value;
+    if(v==='__new'){const n=(prompt('新しい分類名')||'').trim();if(!n){e.target.value=r.catId||'';return}let c=b.cats.find(x=>x.name===n);if(!c){c={id:uid('c'),name:n};b.cats.push(c)}v=c.id}
+    r.catId=v;save();renderChips();renderList();renderEditor()};
+  ed.querySelectorAll('[data-prop]').forEach(cb=>cb.onchange=()=>{const p=b.props.find(x=>x.id===cb.dataset.prop);
+    if(cb.checked){if(!p.items.some(x=>x.rid===r.id))p.items.push({rid:r.id,mark:'',memo:''})}else p.items=p.items.filter(x=>x.rid!==r.id);save();renderSubtabs()});
+  $('#btnBack').onclick=()=>{setMode('list');renderList();window.scrollTo(0,0)};
+  $('#addItem').onclick=addItemRow;
+  $('#addStep').onclick=()=>{r.steps.push({text:''});save();renderSteps();const t=$('#steps').querySelectorAll('textarea');t[t.length-1]?.focus()};
+  $('#btnPdf').onclick=()=>printRecipes(b,[r]);
+  $('#btnXls').onclick=()=>exportExcel(b,[r]);
+  $('#btnDup').onclick=()=>{const c=JSON.parse(JSON.stringify(r));c.id=uid('r');c.name=(r.name||'')+'（コピー）';c.updated=today();b.recipes.splice(b.recipes.indexOf(r)+1,0,c);S.cur.recipeId=c.id;save();renderList();renderChips();renderEditor();renderSubtabs();toast('複製しました')};
+  $('#btnDel').onclick=()=>{if(!confirm(`「${r.name||'この商品'}」を削除しますか？`))return;b.recipes.splice(b.recipes.indexOf(r),1);b.props.forEach(p=>p.items=p.items.filter(x=>x.rid!==r.id));renderSubtabs();S.cur.recipeId=null;save();renderChips();renderList();renderEditor();setMode('list')};
+  ed.querySelectorAll('[data-img]').forEach(box=>box.addEventListener('click',e=>{
+    if(e.target.closest('[data-rm]')){e.stopPropagation();r[e.target.dataset.rm]='';save();renderEditor();return}
+    pickImage(src=>{r[box.dataset.img]=src;r.updated=today();save();renderEditor()})}));
+}
+function addItemRow(){const r=curRecipe();r.items.push(blankItem());save();renderItems();refreshCalc();focusName(r.items.length-1)}
+function focusName(i){setTimeout(()=>{const el=$(`#items .irow[data-i="${i}"] .in-name`);if(el){el.focus();if(isMob())el.scrollIntoView({block:'center',behavior:'smooth'})}},40)}
+
+/* ===== 簡易計算 ===== */
+const QUNITS=['g','ml','個','本'];
+function qBlankItem(){return{name:'',price:'',pack:'',unit:'g',qty:''}}
+function qNew(){return{id:uid('q'),name:'',brand:'',price:'',items:[qBlankItem(),qBlankItem(),qBlankItem()]}}
+const qItemCost=it=>{const p=nz(it.pack);return p>0?nz(it.price)/p*nz(it.qty):0};
+const qCost=q=>q.items.reduce((a,it)=>a+qItemCost(it),0);
+function renderQuick(){
+  setMode('list');$('#mobbar').innerHTML='';
+  if(!S.quick.length)S.quick.push(qNew());
+  const brands=[...new Set([...S.brands.map(b=>b.name),...S.quick.map(q=>q.brand).filter(Boolean)])];
+  $('#view').innerHTML=`<datalist id="qBrandList">${brands.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+  <div class="qwrap">
+    <div class="qtop"><h2>🧮 簡易原価計算</h2><button class="btn pri" id="qNewTop">＋ 商品を追加</button></div>
+    <div id="qlist"></div>
+    <button class="btn pri block" id="qNewBottom" style="padding:12px">＋ 商品を追加</button>
+  </div>`;
+  $('#qlist').innerHTML=S.quick.map(q=>`<div class="card qcard" data-q="${q.id}">
+    <div class="qhead">
+      <div class="fld name"><label>商品名</label><input data-qf="name" value="${esc(q.name)}" placeholder="例：きのこのアヒージョ"></div>
+      <div class="fld"><label>ブランド（選択 or 入力）</label><input data-qf="brand" list="qBrandList" value="${esc(q.brand)}" placeholder="選択または入力"></div>
+      <button class="x" data-qdel>🗑 削除</button>
+    </div>
+    <div class="qh"><div>商材名</div><div>仕入値(円)</div><div>内容量</div><div>単位</div><div>使用量</div><div>商材原価</div><div></div></div>
+    <div class="qitems">${q.items.map((it,i)=>`<div class="qr" data-i="${i}">
+      <div class="q-name"><label>商材名</label><input data-if="name" value="${esc(it.name)}" placeholder="商材名"></div>
+      <div class="q-price"><label>仕入値(円)</label><input inputmode="decimal" data-if="price" value="${esc(it.price)}"></div>
+      <div class="q-pack"><label>内容量</label><input inputmode="decimal" data-if="pack" value="${esc(it.pack)}"></div>
+      <div class="q-unit"><label>単位</label><select data-if="unit">${QUNITS.map(u=>`<option ${it.unit===u?'selected':''}>${u}</option>`).join('')}</select></div>
+      <div class="q-qty"><label>使用量</label><input inputmode="decimal" data-if="qty" value="${esc(it.qty)}"></div>
+      <div class="qc" data-qc="${i}">${yen(qItemCost(it),1)}</div>
+      <button class="del" data-idel title="削除">✕</button></div>`).join('')}</div>
+    <div class="qfoot">
+      <div class="qadd"><button class="btn" data-iadd>＋ 商材を追加</button></div>
+      <div class="kpi hl"><div class="l">合計原価</div><div class="v" data-qt>—</div></div>
+      <div class="kpi"><div class="l">想定売価（税抜）</div><input inputmode="decimal" data-qf="price" value="${esc(q.price)}" placeholder="例：600"></div>
+      <div class="kpi"><div class="l">原価率</div><div class="v" data-qr>—</div></div>
+    </div></div>`).join('');
+  S.quick.forEach(qRefresh);
+  const add=()=>{const q=qNew();S.quick.push(q);save();renderQuick();setTimeout(()=>{const c=document.querySelector(`[data-q="${q.id}"]`);c.scrollIntoView({behavior:'smooth',block:'start'});c.querySelector('[data-qf=name]').focus()},50)};
+  $('#qNewTop').onclick=add;$('#qNewBottom').onclick=add;
+}
+function qRefresh(q){const c=document.querySelector(`[data-q="${q.id}"]`);if(!c)return;
+  q.items.forEach((it,i)=>{const e=c.querySelector(`[data-qc="${i}"]`);if(e)e.textContent=yen(qItemCost(it),1)});
+  const t=qCost(q),p=num(q.price);c.querySelector('[data-qt]').textContent=yen(t,1);c.querySelector('[data-qr]').textContent=p>0?pct(t/p):'—'}
+const qOf=el=>S.quick.find(q=>q.id===el.closest('[data-q]')?.dataset.q);
+document.addEventListener('input',e=>{const t=e.target;if(!t.closest('#qlist'))return;const q=qOf(t);if(!q)return;
+  if(t.dataset.qf){q[t.dataset.qf]=t.value}else if(t.dataset.if){q.items[+t.closest('.qr').dataset.i][t.dataset.if]=t.value}else return;save();qRefresh(q)});
+document.addEventListener('change',e=>{const t=e.target;if(!t.closest('#qlist')||t.tagName!=='SELECT')return;const q=qOf(t);q.items[+t.closest('.qr').dataset.i].unit=t.value;save()});
+document.addEventListener('click',e=>{const t=e.target;if(!t.closest('#qlist'))return;const q=qOf(t);if(!q)return;
+  if(t.closest('[data-iadd]')){q.items.push(qBlankItem());save();renderQuick();setTimeout(()=>{const r=document.querySelectorAll(`[data-q="${q.id}"] .qr`);r[r.length-1]?.querySelector('input')?.focus()},40)}
+  else if(t.closest('[data-idel]')){q.items.splice(+t.closest('.qr').dataset.i,1);if(!q.items.length)q.items.push(qBlankItem());save();renderQuick()}
+  else if(t.closest('[data-qdel]')){if((q.name||q.items.some(i=>i.name))&&!confirm(`「${q.name||'この商品'}」を削除しますか？`))return;S.quick=S.quick.filter(x=>x!==q);save();renderQuick()}});
+document.addEventListener('keydown',e=>{if(e.key!=='Tab'||e.shiftKey)return;const r=e.target.closest('#qlist .qr');if(!r)return;const q=qOf(r);
+  if(+r.dataset.i!==q.items.length-1||e.target.dataset.if!=='qty')return;e.preventDefault();q.items.push(qBlankItem());save();renderQuick();
+  setTimeout(()=>{const rs=document.querySelectorAll(`[data-q="${q.id}"] .qr`);rs[rs.length-1]?.querySelector('input')?.focus()},40)});
+
+/* ===== メモ帳 ===== */
+let memoQ='',memoSel=null;
+const fmtTs=t=>{if(!t)return'';const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`};
+const brandOpts=v=>`<option value="">ブランドなし</option>`+[...new Set([...S.brands.map(b=>b.name),v].filter(Boolean))].map(n=>`<option ${n===v?'selected':''}>${esc(n)}</option>`).join('');
+function renderMemo(){
+  const q=norm(memoQ);
+  const list=S.memos.filter(m=>!q||norm(m.title+m.body+m.brand).includes(q)).sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||(b.ts||0)-(a.ts||0));
+  if(!S.memos.find(m=>m.id===memoSel))memoSel=isMob()?null:(list[0]?.id||null);
+  const m=S.memos.find(x=>x.id===memoSel);
+  document.body.classList.toggle('n-edit',!!m&&isMob());document.body.classList.toggle('n-list',!m||!isMob());
+  $('#view').innerHTML=`<div class="nwrap">
+   <aside class="card side"><div class="brandttl" style="color:#0f766e">📝 メモ帳</div>
+    <button class="btn pri block" id="mNew" style="margin-top:8px">＋ 新規メモ</button>
+    <input class="search" id="mQ" placeholder="🔍 メモを検索" value="${esc(memoQ)}">
+    <div id="mList">${list.map(x=>`<div class="nitem ${x.id===memoSel?'active':''}" data-m="${x.id}"><b>${x.pin?'<span class="pin">📌</span> ':''}${esc(x.title||'（無題）')}</b><small>${fmtTs(x.ts)}${x.brand?' ・ '+esc(x.brand):''} ・ ${esc((x.body||'').replace(/\n/g,' ').slice(0,40))}</small></div>`).join('')||'<div class="empty" style="padding:20px">メモはまだありません</div>'}</div>
+   </aside>
+   <main class="card ned">${m?`
+    <div class="nbar"><button class="btn back" id="mBack">← 一覧</button><select id="mBrand" style="padding:7px;border:1px solid #cfd6df;border-radius:7px">${brandOpts(m.brand)}</select>
+      <button class="btn" id="mPin">${m.pin?'📌 固定解除':'📌 上に固定'}</button><span style="flex:1;font-size:11px;color:var(--sub)">更新 ${fmtTs(m.ts)}</span><button class="btn red" id="mDel">🗑 削除</button></div>
+    <input class="ntitle" id="mTitle" value="${esc(m.title)}" placeholder="タイトル">
+    <textarea id="mBody" placeholder="メモを入力（自動保存）">${esc(m.body)}</textarea>`:'<div class="empty">左の一覧からメモを選ぶか、「＋ 新規メモ」で作成してください。</div>'}</main></div>`;
+  $('#mNew').onclick=()=>{const x={id:uid('n'),title:'',body:'',brand:'',pin:false,ts:Date.now()};S.memos.push(x);memoSel=x.id;memoQ='';save();renderMemo();setTimeout(()=>$('#mTitle')?.focus(),40)};
+  $('#mQ').oninput=e=>{memoQ=e.target.value;const pos=e.target.selectionStart;renderMemo();const i=$('#mQ');i.focus();i.setSelectionRange(pos,pos)};
+  document.querySelectorAll('[data-m]').forEach(el=>el.onclick=()=>{memoSel=el.dataset.m;renderMemo();window.scrollTo(0,0)});
+  if(!m)return;
+  const touch=()=>{m.ts=Date.now();save();const it=document.querySelector(`[data-m="${m.id}"]`);if(it)it.querySelector('b').innerHTML=(m.pin?'<span class="pin">📌</span> ':'')+esc(m.title||'（無題）')};
+  $('#mTitle').oninput=e=>{m.title=e.target.value;touch()};$('#mBody').oninput=e=>{m.body=e.target.value;touch()};
+  $('#mBrand').onchange=e=>{m.brand=e.target.value;m.ts=Date.now();save();renderMemo()};
+  $('#mPin').onclick=()=>{m.pin=!m.pin;m.ts=Date.now();save();renderMemo()};
+  $('#mBack').onclick=()=>{memoSel=null;renderMemo()};
+  $('#mDel').onclick=()=>{if(!confirm(`「${m.title||'このメモ'}」を削除しますか？`))return;S.memos=S.memos.filter(x=>x!==m);memoSel=null;save();renderMemo()};
+}
+
+/* ===== タスク ===== */
+let taskFil='open';
+function renderTask(){
+  const list=S.tasks.filter(t=>taskFil==='all'||(taskFil==='open'?!t.done:t.done)).sort((a,b)=>(a.done-b.done)||(a.created||a.ts||0)-(b.created||b.ts||0));
+  const cnt=k=>S.tasks.filter(t=>k==='all'||(k==='open'?!t.done:t.done)).length;
+  $('#view').innerHTML=`<div class="twrap">
+   <div class="card tadd"><input id="tTitle" placeholder="＋ タスクを入力してEnter"><button class="btn pri" id="tAdd">追加</button></div>
+   <div class="tfil">${[['open','未完了'],['done','完了'],['all','すべて']].map(([k,l])=>`<button class="chip ${taskFil===k?'on':''}" data-tf="${k}">${l}<span class="n">${cnt(k)}</span></button>`).join('')}
+     ${S.tasks.some(t=>t.done)?'<button class="btn sm" id="tClr" style="margin-left:auto">完了済みを削除</button>':''}</div>
+   <div class="card">${list.map(t=>`<div class="task ${t.done?'done':''}" data-t="${t.id}">
+     <button class="ck" data-tk>${t.done?'✓':''}</button>
+     <input class="tt" value="${esc(t.title)}">
+     <button class="btn sm red" data-tdel>✕</button></div>`).join('')||`<div class="empty">${taskFil==='done'?'完了したタスクはありません':'タスクはありません 🎉'}</div>`}</div></div>`;
+  const add=()=>{const v=$('#tTitle').value.trim();if(!v)return;const n=Date.now();S.tasks.push({id:uid('t'),title:v,done:false,created:n,ts:n});save();renderTabs();renderTask();$('#tTitle').focus()};
+  $('#tAdd').onclick=add;$('#tTitle').onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();add()}};
+  document.querySelectorAll('[data-tf]').forEach(b=>b.onclick=()=>{taskFil=b.dataset.tf;renderTask()});
+  $('#tClr')&&($('#tClr').onclick=()=>{const n=S.tasks.filter(t=>t.done).length;if(!confirm(`完了済み${n}件を削除しますか？`))return;S.tasks=S.tasks.filter(t=>!t.done);save();renderTabs();renderTask()});
+  document.querySelectorAll('.task').forEach(el=>{const t=S.tasks.find(x=>x.id===el.dataset.t);
+    el.querySelector('[data-tk]').onclick=()=>{t.done=!t.done;t.ts=Date.now();save();renderTabs();renderTask()};
+    el.querySelector('[data-tdel]').onclick=()=>{if(!confirm(`「${t.title}」を削除しますか？`))return;S.tasks=S.tasks.filter(x=>x!==t);save();renderTabs();renderTask()};
+    el.querySelector('.tt').oninput=e=>{t.title=e.target.value;t.ts=Date.now();save()}});
+}
+
+/* ===== 提案会画面 ===== */
+function renderProp(p){
+  const b=curBrand();setMode('list');$('#mobbar').innerHTML='';
+  const items=propItems(b,p);p.items=items;
+  const rows=items.map(x=>({x,r:b.recipes.find(r=>r.id===x.rid)}));
+  const tc=rows.reduce((a,o)=>a+recipeCost(o.r),0),tp=rows.reduce((a,o)=>a+nz(o.r.price),0);
+  const no=rows.filter(o=>o.x.mark==='o').length,nx=rows.filter(o=>o.x.mark==='x').length;
+  $('#view').innerHTML=`<div class="pwrap">
+   <div class="card sec">
+    <div class="phead">
+      <div class="fld"><label>提案会名</label><input id="p_name" value="${esc(p.name)}"></div>
+      <div class="fld"><label>開催日</label><input id="p_date" type="date" value="${esc(p.date)}"></div>
+      <div class="pbtns"><button class="btn pri" id="p_pick">＋ 商品選択</button><button class="btn" id="p_pdf" style="background:#7c3aed;border-color:#7c3aed;color:#fff;font-weight:700">🖨 試食シートPDF</button><button class="btn" id="p_pdf2">🖨 ＋レシピ付きPDF</button><button class="btn red" id="p_del">🗑 削除</button></div>
+    </div>
+   </div>
+   <div class="card sec">
+    <div class="psum">
+      <div class="kpi"><div class="l">商品数</div><div class="v">${rows.length}品</div></div>
+      <div class="kpi"><div class="l">平均原価率</div><div class="v">${tp>0?pct(tc/tp):'—'}</div><div class="s">売価入力済み商品の合計比</div></div>
+      <div class="kpi"><div class="l">判定 〇</div><div class="v" style="color:#15803d">${no}</div></div>
+      <div class="kpi"><div class="l">判定 ×</div><div class="v" style="color:#b91c1c">${nx}</div><div class="s">未判定 ${rows.length-no-nx}</div></div>
+    </div>
+   </div>
+   <div class="card sec">
+    <h3>試食商品 <span class="hint">商品名タップでレシピを開く／〇×・メモは画面上の記録用（試食シートPDFの判定欄は手書き用の空欄）</span></h3>
+    ${rows.length?`<table class="ptable"><thead><tr><th>No</th><th>商品名</th><th style="text-align:right">最終原価</th><th style="text-align:right">想定売価</th><th style="text-align:right">原価率</th><th>判定</th><th>メモ</th><th></th></tr></thead><tbody>
+    ${rows.map((o,i)=>{const c=recipeCost(o.r),pr=num(o.r.price);return `<tr data-i="${i}">
+      <td class="tno"><span class="c-no">${i+1}</span></td>
+      <td class="pn"><b data-open="${o.r.id}"><span class="mno">${i+1}. </span>${esc(o.r.name||'（商品名未入力）')}</b><small>${esc(catName(b,o.r.catId)||'未分類')}${o.r.short?' ・ '+esc(o.r.short):''}</small></td>
+      <td class="num" data-l="最終原価">${yen(c,1)}</td><td class="num" data-l="想定売価">${pr>0?'¥'+pr.toLocaleString():'—'}</td><td class="num" data-l="原価率">${pct(rateOf(o.r))}</td>
+      <td class="oxc"><div class="ox"><button class="o ${o.x.mark==='o'?'on':''}" data-mk="o">〇</button><button class="x ${o.x.mark==='x'?'on':''}" data-mk="x">✕</button></div></td>
+      <td class="memo"><textarea data-memo rows="2" placeholder="メモ（味・盛り付け・改善点など）">${esc(o.x.memo)}</textarea></td>
+      <td class="mv"><div class="pmv"><button data-pm="-1">↑</button><button data-pm="1">↓</button><button data-pm="del" style="color:var(--ng)">✕</button></div></td></tr>`}).join('')}
+    </tbody></table>`:`<div class="empty">まだ商品がありません。<br>「＋ 商品を選ぶ」から試食会に出す商品を選んでください。</div>`}
+   </div></div>`;
+  $('#p_name').oninput=e=>{p.name=e.target.value;save();clearTimeout(renderProp._t);renderProp._t=setTimeout(renderSubtabs,300)};
+  $('#p_date').onchange=e=>{p.date=e.target.value;save()};
+  $('#p_pick').onclick=()=>openPicker(p);
+  $('#p_pdf').onclick=()=>printProp(b,p,false);
+  $('#p_pdf2').onclick=()=>printProp(b,p,true);
+  $('#p_del').onclick=()=>{if(!confirm(`提案会「${p.name}」を削除しますか？（レシピ自体は消えません）`))return;b.props=b.props.filter(x=>x!==p);S.cur.view='rec';save();renderAll()};
+  $('#view').querySelectorAll('[data-open]').forEach(el=>el.onclick=()=>{S.cur.view='rec';S.cur.recipeId=el.dataset.open;save();renderAll();setMode('edit');window.scrollTo(0,0)});
+  $('#view').querySelectorAll('.ptable tbody tr').forEach(tr=>{const i=+tr.dataset.i,x=p.items[i];
+    tr.querySelectorAll('[data-mk]').forEach(bt=>bt.onclick=()=>{x.mark=x.mark===bt.dataset.mk?'':bt.dataset.mk;save();renderProp(p)});
+    tr.querySelector('[data-memo]').oninput=e=>{x.memo=e.target.value;save()};
+    tr.querySelectorAll('[data-pm]').forEach(bt=>bt.onclick=()=>{const a=bt.dataset.pm;
+      if(a==='del'){p.items.splice(i,1)}else{const j=i+ +a;if(j<0||j>=p.items.length)return;[p.items[i],p.items[j]]=[p.items[j],p.items[i]]}
+      save();renderProp(p);renderSubtabs()})});
+}
+function openPicker(p){
+  const b=curBrand();const sel=new Set(p.items.map(x=>x.rid));let q='';
+  const m=document.createElement('div');m.className='modal';
+  m.innerHTML=`<div class="box"><div class="mh">「${esc(p.name)}」に入れる商品を選択</div>
+    <div style="padding:10px 16px 0"><input class="search" id="pkq" placeholder="🔍 商品名・略称で検索" style="margin:0"></div>
+    <div class="mb" id="pkl"></div>
+    <div class="mf"><span id="pkc" style="margin-right:auto;font-size:13px;color:var(--sub)"></span><button class="btn" id="pkx">キャンセル</button><button class="btn pri" id="pko">決定</button></div></div>`;
+  document.body.appendChild(m);
+  const draw=()=>{const nq=norm(q);const order=id=>{const i=b.cats.findIndex(x=>x.id===id);return i<0?9999:i};
+    const list=b.recipes.filter(r=>!nq||norm(r.name+r.short).includes(nq)).sort((x,y)=>order(x.catId)-order(y.catId));
+    let last=null;
+    m.querySelector('#pkl').innerHTML=list.map(r=>{const g=catName(b,r.catId)||'未分類';const h=g!==last?`<div class="pkg">${esc(g)}</div>`:'';last=g;
+      return h+`<label class="pk"><input type="checkbox" value="${r.id}" ${sel.has(r.id)?'checked':''}><div class="nm"><b>${esc(r.name||'（商品名未入力）')}</b><small>原価 ${yen(recipeCost(r),1)}${num(r.price)>0?' ・ 売価 ¥'+num(r.price).toLocaleString():''}</small></div><div class="rt">${pct(rateOf(r))}</div></label>`}).join('')||'<div class="empty">商品がありません</div>';
+    m.querySelectorAll('.pk input').forEach(cb=>cb.onchange=()=>{cb.checked?sel.add(cb.value):sel.delete(cb.value);m.querySelector('#pkc').textContent=sel.size+'品 選択中'});
+    m.querySelector('#pkc').textContent=sel.size+'品 選択中'};
+  draw();
+  m.querySelector('#pkq').oninput=e=>{q=e.target.value;draw()};
+  const close=()=>m.remove();
+  m.querySelector('#pkx').onclick=close;m.onclick=e=>{if(e.target===m)close()};
+  m.querySelector('#pko').onclick=()=>{
+    p.items=p.items.filter(x=>sel.has(x.rid));
+    b.recipes.forEach(r=>{if(sel.has(r.id)&&!p.items.some(x=>x.rid===r.id))p.items.push({rid:r.id,mark:'',memo:''})});
+    save();close();renderProp(p);renderSubtabs()};
+}
+function propSheetHTML(b,p){
+  const rows=propItems(b,p).map(x=>({x,r:b.recipes.find(r=>r.id===x.rid)}));
+  const dt=p.date?p.date.replace(/-/g,'/'):'';
+  return `<div class="plsheet"><div class="ttl"><b>${esc(p.name)}　試食シート</b><span>${esc(b.name)}</span></div>
+   <div class="meta"><div>開催日：<span>${esc(dt)}</span></div><div>記入者：<span></span></div><div>全${rows.length}品</div></div>
+   <table><thead><tr><th>No</th><th>商品名</th><th>最終原価</th><th>想定売価</th><th>原価率</th><th>判定</th><th>メモ</th></tr></thead><tbody>
+   ${rows.map((o,i)=>{const pr=num(o.r.price);return `<tr><td class="no">${i+1}</td><td class="nm"><b>${esc(o.r.name)}</b><small>${esc(catName(b,o.r.catId))}</small></td>
+     <td class="num">${yen(recipeCost(o.r),1)}</td><td class="num">${pr>0?'¥'+pr.toLocaleString():''}</td><td class="num">${pct(rateOf(o.r))}</td>
+     <td class="oxcell"></td><td class="memo">${esc(o.x.memo||'')}</td></tr>`}).join('')}
+   </tbody></table><div class="foot">出力日 ${today()}</div></div>`;
+}
+function printProp(b,p,withRecipes){
+  const rows=propItems(b,p);if(!rows.length)return toast('商品が選ばれていません');
+  $('#printArea').innerHTML=propSheetHTML(b,p)+(withRecipes?rows.map(x=>sheetHTML(b,b.recipes.find(r=>r.id===x.rid))).join(''):'');
+  const imgs=[...$('#printArea').querySelectorAll('img')];
+  Promise.all(imgs.map(i=>i.complete?1:new Promise(x=>{i.onload=i.onerror=x}))).then(()=>{const t=document.title;document.title=`${p.name}_試食シート_${b.name}`;setTimeout(()=>{window.print();document.title=t},100)});
+}
+
+/* ---- 商材行 ---- */
+function renderItems(){
+  const r=curRecipe();
+  $('#items').innerHTML=r.items.map((it,i)=>{const fx=it.mode==='fixed';return `<div class="irow ${fx?'fixed':''}" data-i="${i}">
+    <div class="c-no">${i+1}</div>
+    <div class="c-name"><label>商材名</label><input class="in-name" data-f="name" value="${esc(it.name)}" placeholder="商材名" autocomplete="off"></div>
+    ${fx?`<div class="fixednote">原価を直接入力</div>`:`<div class="c-price"><label>仕入値(円)</label><input inputmode="decimal" data-f="price" value="${esc(it.price)}"></div>
+    <div class="c-pack"><label>内容量</label><input inputmode="decimal" data-f="pack" value="${esc(it.pack)}"></div>`}
+    <div class="c-unit"><label>単位</label><input data-f="unit" list="unitList" value="${esc(it.unit)}"></div>
+    <div class="c-qty"><label>使用量</label><input inputmode="decimal" data-f="qty" value="${esc(it.qty)}"></div>
+    <div class="c-cost"><label>原価</label>${fx?`<input inputmode="decimal" data-f="cost" value="${esc(it.cost)}">`:`<span data-cost="${i}">—</span><div class="up" data-up="${i}"></div>`}</div>
+    <div class="c-act"><button class="mode" data-act="mode" tabindex="-1" title="計算／原価直接入力を切替">${fx?'計算':'直接'}</button><button class="more" data-act="menu" tabindex="-1">⋯</button><button data-act="up" tabindex="-1">↑</button><button data-act="down" tabindex="-1">↓</button><button class="del" data-act="del" tabindex="-1">✕</button></div>
+  </div>`}).join('')||`<div class="empty" style="padding:16px">「＋ 商材を追加」で行を追加してください</div>`;
+}
+function refreshCalc(){
+  const r=curRecipe();if(!r)return;
+  const total=recipeCost(r),p=num(r.price),rate=p>0?total/p:NaN;
+  r.items.forEach((it,i)=>{const el=document.querySelector(`[data-cost="${i}"]`);if(el)el.textContent=yen(itemCost(it),1);
+    const up=document.querySelector(`[data-up="${i}"]`);if(up)up.textContent=nz(it.pack)>0?`@${(nz(it.price)/nz(it.pack)).toFixed(2)}円/${it.unit||''}`:''});
+  const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};
+  set('#k_cost',yen(total,1));set('#t_cost',yen(total,1));set('#k_cnt',`商材 ${r.items.filter(i=>i.name).length} 点`);
+  set('#k_rate',pct(rate));set('#k_gp',p>0?yen(p-total,0):'—');set('#k_tax',p>0?`税込 ¥${Math.round(p*1.1).toLocaleString()}`:'');
+  $('#mobbar').innerHTML=`<div>最終原価<b>${yen(total,1)}</b></div><div>売価<b>${p>0?'¥'+p.toLocaleString():'—'}</b></div><div>原価率<b>${pct(rate)}</b></div><button id="mbAdd">＋商材</button>`;
+  $('#mbAdd').onclick=addItemRow;
+}
+document.addEventListener('input',e=>{
+  const row=e.target.closest('#items .irow');if(!row)return;const r=curRecipe(),it=r.items[+row.dataset.i],f=e.target.dataset.f;if(!f)return;
+  it[f]=e.target.value;r.updated=today();if(f==='name')openSuggest(e.target,+row.dataset.i);save();refreshCalc();renderListSoft();
+});
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('#items [data-act]');if(!btn)return;
+  const row=btn.closest('.irow'),r=curRecipe(),i=+row.dataset.i,it=r.items[i],a=btn.dataset.act;
+  if(a==='del'){if(it.name&&!confirm(`「${it.name}」を削除しますか？`))return;r.items.splice(i,1)}
+  else if(a==='up'&&i>0)[r.items[i-1],r.items[i]]=[r.items[i],r.items[i-1]];
+  else if(a==='down'&&i<r.items.length-1)[r.items[i+1],r.items[i]]=[r.items[i],r.items[i+1]];
+  else if(a==='mode'||a==='menu'){if(a==='menu'&&!confirm(it.mode==='fixed'?'仕入値から計算する入力に戻しますか？':'仕入値を使わず「原価を直接入力」に切り替えますか？'))return;
+    if(it.mode==='fixed')it.mode='calc';else{it.cost=+itemCost(it).toFixed(2)||'';it.mode='fixed'}}
+  else return;
+  r.updated=today();save();renderItems();refreshCalc();renderListSoft();
+});
+document.addEventListener('keydown',e=>{
+  const sg=$('#suggest');
+  if(!sg.classList.contains('hidden')&&e.target.classList?.contains('in-name')){
+    const o=[...sg.querySelectorAll('.so')];let k=o.findIndex(x=>x.classList.contains('on'));
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();k=e.key==='ArrowDown'?Math.min(o.length-1,k+1):Math.max(0,k-1);o.forEach((x,j)=>x.classList.toggle('on',j===k));o[k]?.scrollIntoView({block:'nearest'});return}
+    if(e.key==='Enter'&&k>=0){e.preventDefault();o[k].dispatchEvent(new MouseEvent('mousedown',{bubbles:true}));return}
+    if(e.key==='Escape'){hideSuggest();return}
+  }
+  if(e.key==='Tab'&&!e.shiftKey){const row=e.target.closest('#items .irow');if(!row)return;const r=curRecipe();if(+row.dataset.i!==r.items.length-1)return;
+    const ins=[...row.querySelectorAll('input')];if(e.target!==ins[ins.length-1])return;e.preventDefault();addItemRow()}
+});
+
+/* ---- 入力候補（過去に入力した商材から値をコピー／連動はしない） ---- */
+let sugRow=-1;
+function pastItems(){const b=curBrand(),r=curRecipe(),map=new Map();
+  b.recipes.slice().sort((x,y)=>String(x.updated).localeCompare(String(y.updated))).forEach(x=>x.items.forEach(it=>{if(x===r&&r.items.indexOf(it)===sugRow)return;if(it.name&&it.mode!=='fixed'&&nz(it.pack)>0)map.set(norm(it.name),it)}));return[...map.values()]}
+function openSuggest(input,i){
+  sugRow=i;const q=norm(input.value);if(!q)return hideSuggest();
+  const list=pastItems().filter(it=>norm(it.name).includes(q)&&norm(it.name)!==q).slice(0,30);
+  if(!list.length)return hideSuggest();
+  const sg=$('#suggest');sg.innerHTML=`<div class="sh">過去に入力した商材（値をコピー）</div>`+list.map((it,k)=>`<div class="so" data-k="${k}"><span>${esc(it.name)}</span><small>¥${nz(it.price).toLocaleString()}/${esc(it.pack)}${esc(it.unit)}</small></div>`).join('');
+  sg._list=list;sg.classList.remove('hidden');
+  const rc=input.getBoundingClientRect(),w=Math.min(Math.max(rc.width,300),window.innerWidth-16);
+  sg.style.width=w+'px';sg.style.left=Math.max(8,Math.min(rc.left,window.innerWidth-w-8))+window.scrollX+'px';sg.style.top=(rc.bottom+window.scrollY+2)+'px';
+}
+function hideSuggest(){$('#suggest').classList.add('hidden')}
+$('#suggest').addEventListener('mousedown',e=>{const o=e.target.closest('.so');if(!o)return;e.preventDefault();
+  const src=$('#suggest')._list[+o.dataset.k],r=curRecipe(),it=r.items[sugRow];if(!it)return hideSuggest();
+  Object.assign(it,{name:src.name,price:src.price,pack:src.pack,unit:src.unit,mode:'calc'});const idx=sugRow;hideSuggest();save();renderItems();refreshCalc();
+  setTimeout(()=>$(`#items .irow[data-i="${idx}"] [data-f=qty]`)?.focus(),40)});
+document.addEventListener('focusout',e=>{if(e.target.classList?.contains('in-name'))setTimeout(hideSuggest,150)});
+window.addEventListener('resize',hideSuggest);
+
+/* ---- 工程 ---- */
+function renderSteps(){
+  const r=curRecipe();let n=0;
+  $('#steps').innerHTML=r.steps.map((s,i)=>{const isNo=!s.mark;if(isNo)n++;return `<div class="step" data-s="${i}">
+    <select><option value="" ${isNo?'selected':''}>${isNo?n:'番号'}</option><option value="※" ${s.mark==='※'?'selected':''}>※</option><option value="★" ${s.mark==='★'?'selected':''}>★</option></select>
+    <textarea rows="${Math.max(1,(s.text||'').split('\n').length)}" placeholder="作業内容（改行するとExcelでも行が分かれます）">${esc(s.text)}</textarea>
+    <div class="c-act"><button data-sa="up">↑</button><button data-sa="down">↓</button><button class="del" data-sa="del">✕</button></div></div>`}).join('');
+  $('#steps').querySelectorAll('.step').forEach(el=>{const i=+el.dataset.s,s=r.steps[i];
+    el.querySelector('textarea').oninput=e=>{s.text=e.target.value;e.target.rows=Math.max(1,s.text.split('\n').length);r.updated=today();save()};
+    el.querySelector('select').onchange=e=>{if(e.target.value)s.mark=e.target.value;else delete s.mark;save();renderSteps()};
+    el.querySelectorAll('[data-sa]').forEach(bn=>bn.onclick=()=>{const a=bn.dataset.sa;
+      if(a==='del')r.steps.splice(i,1);else if(a==='up'&&i>0)[r.steps[i-1],r.steps[i]]=[r.steps[i],r.steps[i-1]];else if(a==='down'&&i<r.steps.length-1)[r.steps[i+1],r.steps[i]]=[r.steps[i],r.steps[i+1]];
+      save();renderSteps()})});
+}
+
+/* ---- 画像 ---- */
+let imgCb=null;
+function pickImage(cb){imgCb=cb;$('#fileImg').value='';$('#fileImg').click()}
+$('#fileImg').addEventListener('change',async e=>{const f=e.target.files[0];if(f&&imgCb){imgCb(await compressImage(f));imgCb=null}});
+function compressImage(src,max=900,q=.8){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const s=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};img.onerror=rej;img.src=typeof src==='string'?src:URL.createObjectURL(src)})}
+function imgSize(src){return new Promise(res=>{if(!src)return res(null);const i=new Image();i.onload=()=>res({w:i.naturalWidth,h:i.naturalHeight});i.onerror=()=>res(null);i.src=src})}
+
+/* ---- バックアップ ---- */
+function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
+$('#btnBackup').onclick=()=>{
+  const nR=S.brands.reduce((a,b)=>a+b.recipes.length,0),nP=S.brands.reduce((a,b)=>a+b.props.length,0);
+  const data=Object.assign(JSON.parse(JSON.stringify(S)),{exportedAt:new Date().toISOString(),app:'genkaTool'});
+  const d=new Date(),stamp=today().replace(/-/g,'')+'_'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0');
+  download(new Blob([JSON.stringify(data)],{type:'application/json'}),`原価計算データ_${stamp}.json`);
+  toast(`書き出しました（レシピ${nR}品・提案会${nP}件・簡易計算${S.quick.length}品・メモ${S.memos.length}件・タスク${S.tasks.length}件）`)};
+$('#btnRestore').onclick=()=>{$('#fileRestore').value='';$('#fileRestore').click()};
+$('#fileRestore').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;
+  let d;try{const txt=await f.text();e.target.value='';d=JSON.parse(txt);if(!d.brands||d.v!==2)throw 0}catch(_){return alert('このファイルは読み込めませんでした（原価計算ツールで書き出したファイルを選んでください）')}
+  d.brands.forEach(b=>{b.props=b.props||[];b.cats=b.cats||[];b.recipes=b.recipes||[]});d.quick=d.quick||[];d.memos=d.memos||[];d.tasks=d.tasks||[];
+  const nR=d.brands.reduce((a,b)=>a+b.recipes.length,0),nP=d.brands.reduce((a,b)=>a+b.props.length,0);
+  const when=d.exportedAt?new Date(d.exportedAt).toLocaleString('ja-JP'):'不明';
+  const m=document.createElement('div');m.className='modal';
+  m.innerHTML=`<div class="box"><div class="mh">📥 データ取り込み</div><div class="mb" style="line-height:1.8;font-size:13px">
+    <b>${esc(f.name)}</b><br>書き出し日時：${esc(when)}<br>ブランド ${d.brands.length}／レシピ ${nR}品／提案会 ${nP}件／簡易計算 ${d.quick.length}品／メモ ${d.memos.length}件／タスク ${d.tasks.length}件
+    <div style="display:grid;gap:8px;margin-top:12px">
+      <button class="btn pri" data-m="merge" style="padding:12px;text-align:left">🔄 統合する（おすすめ）<br><small style="font-weight:400">自分のデータを残したまま、相手のデータを追加。同じ商品は新しい方に更新</small></button>
+      <button class="btn" data-m="replace" style="padding:12px;text-align:left;border-color:#fecaca">♻ 全て置き換える<br><small style="color:var(--sub)">自分のデータを消して、相手と全く同じ状態にする</small></button>
+    </div></div><div class="mf"><button class="btn" data-m="cancel">キャンセル</button></div></div>`;
+  document.body.appendChild(m);
+  m.onclick=ev=>{const bt=ev.target.closest('[data-m]');if(!bt&&ev.target!==m)return;const md=bt?bt.dataset.m:'cancel';
+    if(md==='cancel'){m.remove();return}
+    if(md==='replace'){if(!confirm('今このブラウザにあるデータは全て消えます。よろしいですか？\n（念のため先に「データ書き出し」で保存しておくのがおすすめです）'))return;
+      const keep=S.cur;S=d;delete S.exportedAt;delete S.app;S.cur=Object.assign({page:'quick',view:'rec',cat:ALL,recipeId:null},keep);
+      if(!S.brands.find(b=>b.id===S.cur.brandId))S.cur.brandId=S.brands[0].id;S.cur.view='rec';S.cur.recipeId=null;
+      m.remove();save();renderAll();toast('置き換えました');return}
+    const r=mergeData(d);m.remove();save();renderAll();
+    toast(`統合しました（追加${r.add}・更新${r.upd}）`)};
+});
+const newer=(a,b)=>String(a.updated||'')>=String(b.updated||'');
+function mergeData(d){
+  let add=0,upd=0;
+  d.brands.forEach(src=>{
+    let b=S.brands.find(x=>x.id===src.id)||S.brands.find(x=>norm(x.name)===norm(src.name));
+    if(!b){S.brands.push(JSON.parse(JSON.stringify(src)));add+=src.recipes.length+src.props.length;return}
+    // 分類（名前で対応付け）
+    const cmap={};src.cats.forEach(c=>{let t=b.cats.find(x=>x.id===c.id)||b.cats.find(x=>x.name===c.name);if(!t){t={id:c.id,name:c.name};if(b.cats.some(x=>x.id===t.id))t.id=uid('c');b.cats.push(t)}cmap[c.id]=t.id});
+    // レシピ（ID→無ければ商品名+略称で対応付け）
+    const rmap={};
+    src.recipes.forEach(r0=>{const r=JSON.parse(JSON.stringify(r0));r.catId=cmap[r.catId]||'';
+      const i=b.recipes.findIndex(x=>x.id===r.id||(r.name&&norm(x.name)===norm(r.name)&&norm(x.short)===norm(r.short)));
+      if(i<0){if(S.brands.some(bb=>bb.recipes.some(x=>x.id===r.id)))r.id=uid('r');b.recipes.push(r);add++}
+      else{const cur=b.recipes[i];r.id=cur.id;if(newer(r,cur)&&JSON.stringify(r)!==JSON.stringify(cur)){b.recipes[i]=r;upd++}}
+      rmap[r0.id]=r.id});
+    // 提案会（ID→名前）
+    src.props.forEach(p0=>{const p=JSON.parse(JSON.stringify(p0));p.items=p.items.map(x=>Object.assign({},x,{rid:rmap[x.rid]||x.rid}));
+      const t=b.props.find(x=>x.id===p.id)||b.props.find(x=>x.name===p.name);
+      if(!t){b.props.push(p);add++;return}
+      let ch=false;p.items.forEach(x=>{const y=t.items.find(z=>z.rid===x.rid);if(!y){t.items.push(x);ch=true}else{if(!y.mark&&x.mark){y.mark=x.mark;ch=true}if(x.memo&&y.memo!==x.memo&&!y.memo.includes(x.memo)){y.memo=y.memo?y.memo+'\n'+x.memo:x.memo;ch=true}}});
+      if(!t.date&&p.date){t.date=p.date;ch=true}if(ch)upd++});
+  });
+  d.quick.forEach(q=>{const i=S.quick.findIndex(x=>x.id===q.id);if(i<0){S.quick.push(JSON.parse(JSON.stringify(q)));add++}else if(JSON.stringify(S.quick[i])!==JSON.stringify(q)){S.quick[i]=JSON.parse(JSON.stringify(q));upd++}});
+  [['memos','memo'],['tasks','task']].forEach(([k])=>d[k].forEach(x=>{const i=S[k].findIndex(y=>y.id===x.id);
+    if(i<0){S[k].push(JSON.parse(JSON.stringify(x)));add++}else if((x.ts||0)>(S[k][i].ts||0)){S[k][i]=JSON.parse(JSON.stringify(x));upd++}}));
+  S.quick=S.quick.filter((q,i)=>!(i>0&&!q.name&&!q.items.some(it=>it.name)&&S.quick.length>1));
+  return{add,upd};
+}
+
+/* ===== PDF ===== */
+function sheetHTML(b,r){
+  const total=recipeCost(r),p=num(r.price),rate=p>0?total/p:NaN,rows=Math.max(r.items.filter(i=>i.name).length,12),items=r.items.filter(i=>String(i.name||'').trim());
+  const itemRows=Array.from({length:rows},(_,i)=>{const it=items[i];if(!it)return `<tr><td class="no"></td><td>&nbsp;</td><td></td><td></td><td></td></tr>`;
+    return `<tr><td class="no">${i+1}</td><td>${esc(it.name)}</td><td class="num">${esc(it.qty)}</td><td style="text-align:center">${esc(it.unit)}</td><td class="num">${yen(itemCost(it),1)}</td></tr>`}).join('');
+  let n=0;const steps=r.steps.filter(s=>(s.text||'').trim()).map(s=>`<tr><td class="sn">${esc(s.mark||++n)}</td><td>${esc(s.text)}</td></tr>`).join('');
+  const imgs=[r.photo,r.photo2].filter(Boolean);
+  return `<div class="psheet"><div class="ps-ttl"><b>調理レシピ</b><span>${esc(b.name)}</span></div>
+    <table><tr><th style="width:16%">レシピ分類</th><td style="width:34%">${esc(catName(b,r.catId))}</td><th style="width:14%">略称</th><td class="ps-yel" style="text-align:center;font-weight:700">${esc(r.short)}</td></tr></table>
+    <table style="margin-top:-1px"><tr><td rowspan="3" class="ps-yel ps-name" style="width:44%">${esc(r.name)}</td><th style="width:12%">売価(抜)</th><td style="width:14%;text-align:right">${p>0?'¥'+p.toLocaleString():''}</td><th style="width:12%">ポーション</th><td rowspan="3" style="text-align:center">${esc(r.portion)}</td></tr>
+      <tr><th>原価</th><td class="ps-hl">${yen(total,1)}</td><td rowspan="2"></td></tr><tr><th>原価率</th><td class="ps-hl">${pct(rate)}</td></tr></table>
+    <div class="ps-body"><table><tr><th></th><th>商材名</th><th>使用量</th><th>単位</th><th>原価</th></tr>${itemRows}<tr><th colspan="4" style="text-align:right">合計</th><td class="num ps-hl">${yen(total,1)}</td></tr></table>
+      <table class="ps-steps" style="margin-left:-1px;width:calc(100% + 1px)"><tr><th colspan="2">作業工程</th></tr>${steps||'<tr><td class="sn"></td><td>&nbsp;</td></tr>'}</table></div>
+    <div class="ps-foot"><div><h5>【盛り付け例】${esc(r.photoNote||'')}</h5><div class="imgs ${imgs.length===1?'one':''}">${imgs.map(s=>`<img src="${s}">`).join('')}</div></div><div><h5>【注意事項】</h5><div class="ps-notes">${esc(r.notes||'')}</div></div></div>
+    <div class="ps-meta">出力日 ${today()}　最終更新 ${esc(r.updated||'')}</div></div>`;
+}
+function printRecipes(b,list){
+  if(!list.length)return toast('出力する商品がありません');
+  $('#printArea').innerHTML=list.map(r=>sheetHTML(b,r)).join('');
+  const imgs=[...$('#printArea').querySelectorAll('img')];
+  Promise.all(imgs.map(i=>i.complete?1:new Promise(x=>{i.onload=i.onerror=x}))).then(()=>{const t=document.title;document.title=list.length===1?`レシピ_${b.name}_${list[0].short||list[0].name}`:`レシピ_${b.name}_${today()}`;setTimeout(()=>{window.print();document.title=t},100)});
+}
+
+/* ===== Excel ===== */
+let excelLoading=null;
+function loadExcelJS(){if(window.ExcelJS)return Promise.resolve();if(excelLoading)return excelLoading;
+  excelLoading=new Promise((res,rej)=>{let k=0;const next=()=>{if(k>=EXCEL_CDN.length){excelLoading=null;return rej(new Error('Excel機能の読み込みに失敗しました（インターネット接続を確認してください）'))}const s=document.createElement('script');s.src=EXCEL_CDN[k++];s.onload=()=>window.ExcelJS?res():next();s.onerror=next;document.head.appendChild(s)};next()});return excelLoading}
+const C_BLUE='FFE5F3FF',C_YEL='FFFDFED6',C_HL='FFFFFF00';
+const thin={style:'thin',color:{argb:'FF000000'}},dbl={style:'double',color:{argb:'FF000000'}};
+const fill=c=>({type:'pattern',pattern:'solid',fgColor:{argb:c}});
+const fmtYen='"¥"#,##0;"¥"\\-#,##0',fmtCost='#,##0_);[Red]\\(#,##0\\)';
+function sheetName(s,used){let n=String(s||'無題').replace(/[\\\/\?\*\[\]:]/g,'').slice(0,31)||'無題';const base=n;let k=2;while(used.has(n))n=base.slice(0,28)+'_'+k++;used.add(n);return n}
+
+async function buildRecipeSheet(wb,b,r,name){
+  const ws=wb.addWorksheet(name,{views:[{showGridLines:false}],pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:1,margins:{left:0.25,right:0.25,top:0.25,bottom:0.25,header:0.1,footer:0.1},horizontalCentered:true}});
+  [3.125,30.625,7.625,3.625,8.625,3.125,7.625,6.625,2.625,6.125,5.125,8.625].forEach((w,i)=>ws.getColumn(i+1).width=w);
+  const stepLines=[];let n=0;
+  r.steps.forEach(s=>{const lines=String(s.text||'').split('\n');if(!lines.join('').trim())return;const lab=s.mark||(++n);lines.forEach((t,j)=>stepLines.push({no:j===0?lab:null,text:t}))});
+  const items=r.items.filter(it=>String(it.name||'').trim());
+  const last=Math.max(29,6+items.length,6+stepLines.length),footRow=last+2,end=footRow+16;
+  for(let rr=1;rr<=end;rr++){ws.getRow(rr).height=15;for(let c=1;c<=12;c++)ws.getCell(rr,c).font={name:'游ゴシック',size:9}}
+  const cell=(a,v,st={})=>{const c=ws.getCell(a);if(v!==undefined)c.value=v;c.font=Object.assign({name:'游ゴシック',size:9},st.font||{});if(st.fill)c.fill=fill(st.fill);if(st.al)c.alignment=st.al;if(st.fmt)c.numFmt=st.fmt;if(st.border)c.border=st.border;return c};
+  const box=(rng,st={})=>{const[a,z]=rng.split(':');const A=ws.getCell(a),Z=ws.getCell(z||a);for(let rr=A.row;rr<=Z.row;rr++)for(let cc=A.col;cc<=Z.col;cc++){const c=ws.getCell(rr,cc),bd={};if(rr===A.row)bd.top=st.top||thin;if(rr===Z.row)bd.bottom=st.bottom||thin;if(cc===A.col)bd.left=st.left||thin;if(cc===Z.col)bd.right=st.right||thin;c.border=bd;if(st.fill)c.fill=fill(st.fill)}};
+  const merge=x=>ws.mergeCells(x),B={bold:true},CEN={horizontal:'center',vertical:'middle'},ALL4={top:thin,bottom:thin,left:thin,right:thin};
+  merge('C1:H1');cell('C1','調理レシピ',{font:B,al:CEN});['C1','D1','E1','F1','G1','H1'].forEach(a=>ws.getCell(a).border={bottom:thin});
+  merge('J1:L1');cell('J1',b.name,{al:{horizontal:'right'}});
+  merge('A2:B2');cell('A2','レシピ分類',{font:B,al:CEN});box('A2:B2',{fill:C_BLUE});
+  merge('C2:I2');cell('C2',catName(b,r.catId),{font:B,al:CEN});box('C2:I2',{fill:C_BLUE});
+  cell('J2','略称',{font:B,al:CEN});box('J2',{fill:C_BLUE});
+  merge('K2:L2');cell('K2',r.short||'',{font:B,al:CEN});box('K2:L2',{fill:C_YEL});
+  merge('A3:D5');cell('A3',r.name||'',{font:B,al:{horizontal:'left',vertical:'middle',wrapText:true}});box('A3:D5',{fill:C_YEL,bottom:dbl});
+  cell('E3','売価(抜)',{font:B,al:CEN});box('E3',{fill:C_BLUE});
+  const pv=num(r.price);merge('F3:G3');cell('F3',isFinite(pv)?pv:null,{fmt:fmtYen,al:{horizontal:'right'}});box('F3:G3');
+  merge('H3:I3');cell('H3','ポーション',{font:B,al:CEN});box('H3:I3',{fill:C_BLUE});merge('J3:L3');box('J3:L3');
+  const total=recipeCost(r);
+  cell('E4','原価',{font:B,al:CEN});box('E4',{fill:C_BLUE});
+  merge('F4:G4');cell('F4',{formula:`SUM(E7:E${last})`,result:total},{fmt:fmtYen,al:{horizontal:'right'}});box('F4:G4',{fill:C_HL});
+  merge('H4:L5');cell('H4',r.portion||'',{al:{horizontal:'center',vertical:'middle',wrapText:true}});box('H4:L5');
+  cell('E5','原価率',{font:B,al:CEN});box('E5',{fill:C_BLUE});
+  merge('F5:G5');cell('F5',{formula:'IFERROR(F4/F3,"")',result:pv>0?total/pv:''},{fmt:'0.0%',al:{horizontal:'right'}});box('F5:G5',{fill:C_HL});
+  [['A6',''],['B6','商材名'],['C6','使用量'],['D6','単位'],['E6','原価'],['F6','']].forEach(([a,v])=>{cell(a,v,{font:B,al:CEN,fill:C_BLUE});ws.getCell(a).border={top:dbl,bottom:thin,left:thin,right:a==='E6'?dbl:thin}});
+  merge('G6:L6');cell('G6','作業工程',{font:B,al:CEN});box('G6:L6',{fill:C_BLUE,top:dbl});
+  for(let rr=7;rr<=last;rr++){
+    const it=items[rr-7],q=it?num(it.qty):NaN;
+    cell('A'+rr,it?rr-6:null,{al:CEN,fill:C_BLUE,border:ALL4});
+    cell('B'+rr,it?it.name:null,{al:{horizontal:'left',vertical:'middle'},border:ALL4});
+    cell('C'+rr,it?(isFinite(q)?q:(it.qty||null)):null,{al:{horizontal:'right',vertical:'middle'},border:ALL4});
+    cell('D'+rr,it?it.unit||'':null,{al:CEN,border:ALL4});
+    let ev=null;if(it){if(it.mode==='fixed')ev=nz(it.cost);else if(nz(it.pack)>0)ev=isFinite(q)?{formula:`${nz(it.price)}/${nz(it.pack)}*C${rr}`,result:itemCost(it)}:0;else ev=0}
+    cell('E'+rr,ev,{fmt:fmtCost,al:{horizontal:'right',vertical:'middle'},border:{top:thin,bottom:thin,left:thin,right:dbl}});
+    const sl=stepLines[rr-7];
+    cell('F'+rr,sl&&sl.no!=null?sl.no:null,{al:CEN,fill:C_BLUE,border:{top:thin,bottom:thin}});
+    cell('G'+rr,sl?sl.text:null,{al:{horizontal:'left',vertical:'middle'},border:{top:thin,bottom:thin,left:thin}});
+    for(let c=8;c<=12;c++){const bd={top:thin,bottom:thin};if(c===12)bd.right=thin;ws.getCell(rr,c).border=bd}
+  }
+  cell('A'+footRow,'【盛り付け例】'+(r.photoNote?'　'+r.photoNote:''),{font:B});cell('F'+footRow,'【注意事項】',{font:B});
+  for(let rr=footRow;rr<=end;rr++)for(let c=1;c<=12;c++){const bd={};if(rr===footRow)bd.top=thin;if(rr===end)bd.bottom=thin;if(c===1||c===6)bd.left=thin;if(c===12)bd.right=thin;ws.getCell(rr,c).border=bd}
+  const notes=String(r.notes||'').split('\n');while(notes.length&&!notes[notes.length-1].trim())notes.pop();
+  notes.forEach((t,i)=>cell('F'+(footRow+2+i),t||null));
+  const addImg=async(src,col,row0,mw,mh)=>{if(!src)return;const sz=await imgSize(src);if(!sz)return;const id=wb.addImage({base64:src,extension:/^data:image\/png/.test(src)?'png':'jpeg'});const s=Math.min(mw/sz.w,mh/sz.h);ws.addImage(id,{tl:{col,row:row0},ext:{width:Math.round(sz.w*s),height:Math.round(sz.h*s)},editAs:'oneCell'})};
+  await addImg(r.photo,1,footRow+1,215,200);
+  const p2=footRow+1+(notes.length?notes.length+2:0);await addImg(r.photo2,6,p2,215,Math.max(80,200-(p2-footRow-1)*20));
+  ws.pageSetup.printArea=`A1:L${end}`;
+}
+function buildToc(wb,b,list){
+  const ws=wb.addWorksheet('目次',{views:[{showGridLines:false}],pageSetup:{paperSize:9,orientation:'landscape',fitToPage:true,fitToWidth:1,fitToHeight:0}});
+  [2,14,22,36,10,10,9,16,12].forEach((w,i)=>ws.getColumn(i+1).width=w);const F={name:'游ゴシック',size:10};
+  ws.getCell('B2').value=`◆ ${b.name} レシピ一覧`;ws.getCell('B2').font={name:'游ゴシック',size:12,bold:true};ws.getCell('B3').value=`出力日：${today()}`;ws.getCell('B3').font={name:'游ゴシック',size:9};
+  ['分類','略称','正式名','売価(抜)','原価','原価率','ポーション','最終更新'].forEach((h,i)=>{const c=ws.getCell(5,i+2);c.value=h;c.font={...F,bold:true};c.fill=fill(C_BLUE);c.alignment={horizontal:'center'};c.border={top:thin,bottom:thin,left:thin,right:thin}});
+  list.forEach((r,k)=>{const cost=recipeCost(r),p=num(r.price);[catName(b,r.catId),r.short||'',r.name||'',isFinite(p)?p:null,+cost.toFixed(2),p>0?cost/p:null,r.portion||'',r.updated||''].forEach((v,i)=>{const c=ws.getCell(6+k,i+2);c.value=v;c.font=F;c.border={top:thin,bottom:thin,left:thin,right:thin};if(i===3||i===4)c.numFmt=fmtYen;if(i===5)c.numFmt='0.0%'})});
+}
+async function exportExcel(b,list){
+  if(!list.length)return toast('出力する商品がありません');
+  try{toast('Excelを作成中…');await loadExcelJS();const wb=new ExcelJS.Workbook();wb.creator='原価計算ツール';
+    const used=new Set(['目次']);if(list.length>1)buildToc(wb,b,list);
+    for(const r of list)await buildRecipeSheet(wb,b,r,sheetName(r.short||r.name,used));
+    const buf=await wb.xlsx.writeBuffer(),d=today().replace(/-/g,'');
+    const lbl=S.cur.cat===ALL?'全商品':S.cur.cat===NOCAT?'未分類':catName(b,S.cur.cat);
+    const fn=list.length===1?`レシピデータ_${b.name}_${(list[0].short||list[0].name||'新規').replace(/[\\\/:*?"<>|]/g,'')}_${d}.xlsx`:`レシピデータ_${b.name}_${lbl}_${d}.xlsx`;
+    download(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),fn);toast('Excelを出力しました')}
+  catch(err){console.error(err);alert(err.message||'Excel出力に失敗しました')}
+}
+/* ---- Excel取込 ---- */
+$('#fileXlsx').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{toast('取り込み中…');await loadExcelJS();const wb=new ExcelJS.Workbook();await wb.xlsx.load(await f.arrayBuffer());await importWorkbook(wb)}catch(err){console.error(err);alert('取り込みに失敗しました：'+(err.message||err))}});
+function cv(c){const v=c.value;if(v==null)return null;if(typeof v==='object'){if(v.richText)return v.richText.map(t=>t.text).join('');if('result'in v)return v.result??null;if(v.text)return v.text;return null}return v}
+function cformula(c){const v=c.value;if(v&&typeof v==='object'){if(v.formula)return v.formula;if(v.sharedFormula)return c.formula||null}return null}
+async function importWorkbook(wb){
+  const b=curBrand(),got=[];
+  for(const ws of wb.worksheets){
+    if(!String(cv(ws.getCell('C1'))||'').includes('調理レシピ'))continue;
+    const r=newRecipe('');r.items=[];r.steps=[];
+    const cn=String(cv(ws.getCell('C2'))||'').trim();
+    if(cn){let c=b.cats.find(x=>x.name===cn);if(!c){c={id:uid('c'),name:cn};b.cats.push(c)}r.catId=c.id}
+    r.short=String(cv(ws.getCell('K2'))||ws.name);r.name=String(cv(ws.getCell('A3'))||'');
+    const p=cv(ws.getCell('F3'));r.price=typeof p==='number'?p:'';r.portion=String(cv(ws.getCell('H4'))||'');
+    let foot=31;for(let rr=7;rr<=Math.min(ws.rowCount,200);rr++){const a=String(cv(ws.getCell('A'+rr))||'');if(a.includes('【盛り付け例】')){foot=rr;r.photoNote=a.replace('【盛り付け例】','').trim();break}}
+    let cur=null;
+    for(let rr=7;rr<foot;rr++){
+      const nm=cv(ws.getCell('B'+rr));
+      if(nm!=null&&String(nm).trim()){const it={name:String(nm).trim(),qty:cv(ws.getCell('C'+rr))??'',unit:String(cv(ws.getCell('D'+rr))||'').normalize('NFKC').trim()};
+        const fm=cformula(ws.getCell('E'+rr)),m=fm&&String(fm).replace(/^=/,'').match(/^\s*([\d.]+)\s*\/\s*([\d.]+)\s*\*\s*C\d+\s*$/);
+        if(m)Object.assign(it,{mode:'calc',price:+m[1],pack:+m[2]});else{const v=cv(ws.getCell('E'+rr));Object.assign(it,{mode:'fixed',cost:typeof v==='number'?+v.toFixed(4):0})}
+        r.items.push(it)}
+      const no=cv(ws.getCell('F'+rr)),tx=cv(ws.getCell('G'+rr));
+      if(no!=null&&String(no).trim()!==''){cur={text:String(tx??'')};if(typeof no!=='number')cur.mark=String(no);r.steps.push(cur)}
+      else if(tx!=null&&String(tx).trim()){if(!cur){cur={text:''};r.steps.push(cur)}cur.text+=(cur.text?'\n':'')+String(tx)}
+    }
+    if(!r.steps.length)r.steps=[{text:''}];
+    const notes=[];for(let rr=foot+1;rr<=Math.min(ws.rowCount,foot+30);rr++){const t=cv(ws.getCell('F'+rr));if(t!=null&&String(t).trim())notes.push(String(t))}r.notes=notes.join('\n');
+    try{const imgs=ws.getImages().slice().sort((x,y)=>(x.range.tl.nativeCol??x.range.tl.col)-(y.range.tl.nativeCol??y.range.tl.col));
+      for(let k=0;k<Math.min(2,imgs.length);k++){const im=wb.getImage(+imgs[k].imageId);if(!im||!im.buffer)continue;const url=URL.createObjectURL(new Blob([im.buffer],{type:'image/'+(im.extension==='png'?'png':'jpeg')}));const d=await compressImage(url);URL.revokeObjectURL(url);if(k===0)r.photo=d;else r.photo2=d}}catch(err){console.warn(err)}
+    got.push(r);
+  }
+  if(!got.length)return alert('「調理レシピ」形式のシートが見つかりませんでした');
+  b.recipes.push(...got);S.cur.recipeId=null;S.cur.cat=ALL;save();renderAll();setMode('list');toast(`${b.name} に ${got.length} 件取り込みました`);
+}
+
+/* ===== 起動 ===== */
+window.addEventListener('resize',()=>{if(S&&['quick','memo','task'].includes(S.cur.page))return;if(!isMob())setMode(curRecipe()?'edit':'list')});
+(async()=>{
+  S=await loadState();try{const bk=JSON.parse(localStorage.getItem(KEY+'_bk')||'null');if(bk&&bk.v===2&&(!S||(bk.ts||0)>(S.ts||0)))S=bk}catch(_){}if(!S||S.v!==2){S=initState();await doSave()}
+  S.brands.forEach(b=>{b.props=b.props||[]});S.quick=S.quick||[];S.memos=S.memos||[];S.tasks=S.tasks||[];if(!S.cur.page)S.cur.page='quick';
+  if(!S.brands.find(b=>b.id===S.cur.brandId))S.cur={brandId:S.brands[0].id,recipeId:null,cat:ALL};
+  S.cur.page='quick';
+  $('#saveState').textContent='✓ このブラウザに自動保存';
+  if(isMob())S.cur.recipeId=null;
+  renderAll();if(!['quick','memo','task'].includes(S.cur.page))setMode(isMob()?'list':(curRecipe()?'edit':'list'));
+})();
+</script>
+</body>
+</html>
